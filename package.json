@@ -9,6 +9,11 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "vite": "^8.0.1"
+    "vite": "5.4.14"
+  },
+  "dependencies": {
+    "@studio-freight/lenis": "1.0.42",
+    "gsap": "3.12.7",
+    "three": "0.170.0"
   }
 }
