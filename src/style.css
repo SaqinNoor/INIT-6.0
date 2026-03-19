@@ -1,4 +1,3 @@
-
 :root {
   --cyan: #99eb1e;     
   --magenta: #333333;  
@@ -8,7 +7,7 @@
   --deep: #050505;
   --abyss: #000000;
   --grid: rgba(255, 255, 255, 0.05); 
-  --border: rgba(126, 127, 154, 0.3); 
+  --border: rgba(126, 127, 154, 0.3);
   --font-display: 'Syne', sans-serif;
   --font-body: 'Manrope', sans-serif;
   --font-mono: 'Manrope', sans-serif;
@@ -1302,7 +1301,7 @@ body::before {
   .depth-gauge { right: 12px; }
   .depth-bar-wrap { height: 120px; }
   
-  /* Hero Rescale */
+  
   #hero {
     padding-top: 5rem;
   }
@@ -1320,7 +1319,7 @@ body::before {
      font-size: 0.85rem;
   }
 
-  /* The Asymmetric Timeline Spine */
+
   .cable-container {
     left: 20px;
     transform: none;
@@ -1345,7 +1344,7 @@ body::before {
   .hotspot:nth-child(7) { top: 71% !important; }
   .hotspot:nth-child(8) { top: 82% !important; }
 
-  /* Full-Width HUD Cards */
+
   .hotspot {
     left: 44px !important;
     right: auto !important;
@@ -1381,7 +1380,7 @@ body::before {
     margin-top: -1.2rem;
   }
   
-  /* Card Typography Boost */
+
   .card-title { font-size: 1.35rem; }
   .card-body { font-size: 0.9rem; }
   .card-stat span { font-size: 1.5rem; }
@@ -1407,7 +1406,7 @@ body::before {
     display: block !important;
   }
   
-  /* Reality Check Mobile Restacking */
+
   .truth-inner {
     padding: 4rem 1.5rem;
   }
@@ -1424,7 +1423,7 @@ body::before {
     padding: 2rem;
   }
 
-  /* Expand Neural Earth */
+
   #globe-section {
     overflow: visible;
   }
@@ -1436,7 +1435,7 @@ body::before {
     font-size: clamp(3rem, 15vw, 6rem);
   }
   
-  /* Sea Creatures Scaling */
+
   .creature-canvas {
     transform: scale(0.6);
   }
