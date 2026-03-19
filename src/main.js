@@ -186,6 +186,12 @@ function initCreatures() {
   drawWireframeJellyfish('jellyfish-1', '#333333');
   drawWireframeFish('fish-2', '#7e7f9a');
   drawWireframeAnglerfish('anglerfish-1', '#99eb1e');
+  drawWireframeJellyfish('jellyfish-2', '#99eb1e');
+  drawWireframeFish('fish-3', '#333333');
+  drawWireframeAnglerfish('anglerfish-2', '#7e7f9a');
+  drawWireframeFish('fish-4', '#99eb1e');
+  drawWireframeJellyfish('jellyfish-3', '#7e7f9a');
+  drawWireframeAnglerfish('anglerfish-3', '#333333');
 }
 
 
@@ -549,17 +555,17 @@ function initAnimations() {
 
   const pContainer = document.getElementById('particles-container');
   if (pContainer) {
-    for (let i = 0; i < 60; i++) {
+    for (let i = 0; i < 200; i++) {
       const p = document.createElement('div');
       p.className = 'particle';
-      const size = Math.random() * 3 + 1;
+      const size = Math.random() * 4 + 1;
       p.style.width = size + 'px';
       p.style.height = size + 'px';
       p.style.left = Math.random() * 100 + '%';
       p.style.top = Math.random() * 100 + '%';
       pContainer.appendChild(p);
       gsap.to(p, {
-        y: -window.innerHeight * (0.8 + Math.random()),
+        y: -window.innerHeight * (1.5 + Math.random() * 2),
         ease: 'none',
         scrollTrigger: { trigger: '#descent', start: 'top bottom', end: 'bottom top', scrub: true }
       });
@@ -584,18 +590,19 @@ function initAnimations() {
   }
 
 
-  document.querySelectorAll('.creature').forEach((creature, i) => {
-    const speed = parseFloat(creature.dataset.speed) || 0.3;
+  document.querySelectorAll('.creature').forEach((wrapper, i) => {
+    const canvas = wrapper.querySelector('.creature-canvas');
+    const speed = parseFloat(wrapper.dataset.speed) || 0.3;
     ScrollTrigger.create({
-      trigger: creature, start: 'top bottom', once: true,
+      trigger: wrapper, start: 'top bottom', once: true,
       onEnter: () => {
-        gsap.to(creature, { opacity: 0.9, duration: 1.5, delay: i * 0.2, ease: 'power2.out' });
-        gsap.to(creature, { y: `+=${20 + i * 8}`, duration: 3 + i * 0.5, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: i * 0.4 });
+        gsap.to(wrapper, { opacity: 0.9, duration: 1.5, delay: i * 0.1, ease: 'power2.out' });
+        if(canvas) gsap.to(canvas, { y: 20 + i * 4, duration: 3 + Math.random(), ease: 'sine.inOut', yoyo: true, repeat: -1 });
       }
     });
     ScrollTrigger.create({
       trigger: '#descent', start: 'top bottom', end: 'bottom top', scrub: true,
-      onUpdate: self => gsap.set(creature, { y: (self.progress - 0.5) * 400 * speed })
+      onUpdate: self => gsap.set(wrapper, { y: (self.progress - 0.5) * 600 * speed })
     });
   });
 
