@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NERVOUS SYSTEM OF THE EARTH — Submarine Cable Documentary</title>
+  <meta name="description"
+    content="An immersive documentary about the physical backbone of the internet: the submarine cable network at the bottom of the ocean." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Syne:wght@400;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="icon" type="image/png" href="/INIT-6.0/favicon.png" />
+  <script type="module" crossorigin src="/INIT-6.0/assets/index-BJ323Ln2.js"></script>
+  <link rel="stylesheet" crossorigin href="/INIT-6.0/assets/index-Z2poj5KW.css">
+</head>
+
+<body>
+
+
+  <div class="acid-loader">
+    <div class="loader-grid"></div>
+    <div class="loader-scan"></div>
+    <div class="loader-content">
+      <div class="loader-counter">00</div>
+      <div class="loader-status">INITIALIZING SYSTEM</div>
+      <div class="loader-line"></div>
+    </div>
+  </div>
+
+
+  <div id="cursor"></div>
+  <div id="cursor-dot"></div>
+
+
+  <canvas id="noise-canvas"></canvas>
+
+
+  <div id="smooth-wrapper">
+    <div id="smooth-content">
+
+
+      <section id="hero" class="section">
+        <div class="star-field" id="star-field"></div>
+        <div class="hero-content">
+          <div class="hero-eyebrow glitch-text" data-text="A PROJECT BY SAQIN NOOR">A PROJECT BY SAQIN
+            NOOR</div>
+          <h1 class="hero-title" id="hero-title">
+            <span class="line" data-text="NERVOUS">NERVOUS</span>
+            <span class="line accent hero-glitch" data-text="SYSTEM">SYSTEM</span>
+            <span class="line" data-text="OF THE">OF THE</span>
+            <span class="line accent hero-glitch" data-text="EARTH">EARTH</span>
+          </h1>
+          <div class="hero-reveal-wrap">
+            <p class="hero-subtitle">You think the internet lives in the cloud. It lies at the <em>bottom of the
+                ocean.</em></p>
+          </div>
+          <div class="hero-stats">
+            <div class="stat-item">
+              <span class="stat-num" data-val="1400000">0</span>
+              <span class="stat-unit">KM</span>
+              <span class="stat-label">of cable on the ocean floor</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num" data-val="529">0</span>
+              <span class="stat-unit">+</span>
+              <span class="stat-label">active submarine cable systems</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num" data-val="99">0</span>
+              <span class="stat-unit">%</span>
+              <span class="stat-label">of international data carried</span>
+            </div>
+          </div>
+
+          <div class="scroll-cue">
+            <span>SCROLL TO DESCEND</span>
+            <div class="scroll-arrow">
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="24" cy="24" r="23" stroke="currentColor" stroke-width="1.5" />
+                <path d="M16 21L24 30L32 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="depth-gauge">
+          <div class="depth-label">DEPTH</div>
+          <div class="depth-value" id="depth-value">0<span>M</span></div>
+          <div class="depth-bar-wrap">
+            <div class="depth-bar" id="depth-bar"></div>
+          </div>
+        </div>
+      </section>
+
+
+      <div class="editorial-marquee">
+        <div class="marquee-track">
+          <span class="marquee-item">// 1.4 MILLION KM OF NEURAL INFRASTRUCTURE // SUB-SEA CONNECTIVITY // 99% OF GLOBAL
+            TRAFFIC // NERVOUS SYSTEM OF THE EARTH </span>
+          <span class="marquee-item">// 1.4 MILLION KM OF NEURAL INFRASTRUCTURE // SUB-SEA CONNECTIVITY // 99% OF GLOBAL
+            TRAFFIC // NERVOUS SYSTEM OF THE EARTH </span>
+        </div>
+      </div>
+
+
+      <section id="descent" class="section">
+
+        <div class="descent-bg" id="descent-bg"></div>
+        <div id="particles-container"></div>
+
+
+        <div class="cable-container">
+          <svg id="cable-svg" viewBox="0 0 2000 4000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 1000 0 L 1000 4000" fill="none" stroke="#99eb1e" stroke-width="140" opacity="0.08"
+              stroke-linecap="butt" />
+            <path d="M 1000 0 L 1000 4000" fill="none" stroke="#99eb1e" stroke-width="70" opacity="0.15"
+              stroke-linecap="butt" />
+            <path class="fiber-glow" d="M 1000 0 L 1000 4000" fill="none" stroke="#99eb1e" stroke-width="32"
+              opacity="0.6" stroke-linecap="butt" />
+            <path class="fiber-glow" d="M 1000 0 L 1000 4000" fill="none" stroke="#99eb1e" stroke-width="16" opacity="1"
+              stroke-linecap="butt" />
+            <path class="fiber-line" d="M 1000 0 L 1000 4000" fill="none" stroke="#ffffff" stroke-width="6" opacity="1"
+              stroke-linecap="butt" />
+          </svg>
+        </div>
+
+
+        <div class="creature" id="creature-1" style="top: 8%; left: 8%;" data-speed="0.8"><canvas
+            class="creature-canvas" id="fish-1" width="240" height="140"></canvas></div>
+        <div class="creature" id="creature-2" style="top: 15%; right: 6%;" data-speed="1.2"><canvas
+            class="creature-canvas" id="jellyfish-1" width="180" height="220"></canvas></div>
+        <div class="creature" id="creature-3" style="top: 25%; left: 12%;" data-speed="0.6"><canvas
+            class="creature-canvas" id="fish-2" width="200" height="120"></canvas></div>
+        <div class="creature" id="creature-4" style="top: 35%; right: 15%;" data-speed="1.5"><canvas
+            class="creature-canvas" id="anglerfish-1" width="240" height="160"></canvas></div>
+        <div class="creature" id="creature-5" style="top: 45%; left: 5%;" data-speed="0.9"><canvas
+            class="creature-canvas" id="jellyfish-2" width="180" height="220"></canvas></div>
+        <div class="creature" id="creature-6" style="top: 55%; right: 8%;" data-speed="0.5"><canvas
+            class="creature-canvas" id="fish-3" width="240" height="140"></canvas></div>
+        <div class="creature" id="creature-7" style="top: 68%; left: 18%;" data-speed="1.1"><canvas
+            class="creature-canvas" id="anglerfish-2" width="240" height="160"></canvas></div>
+        <div class="creature" id="creature-8" style="top: 75%; right: 20%;" data-speed="0.4"><canvas
+            class="creature-canvas" id="fish-4" width="200" height="120"></canvas></div>
+        <div class="creature" id="creature-9" style="top: 85%; left: 10%;" data-speed="1.3"><canvas
+            class="creature-canvas" id="jellyfish-3" width="250" height="300"></canvas></div>
+        <div class="creature" id="creature-10" style="top: 92%; right: 12%;" data-speed="0.7"><canvas
+            class="creature-canvas" id="anglerfish-3" width="300" height="200"></canvas></div>
+
+
+        <div class="cable-hotspots" id="cable-hotspots">
+
+          <div class="hotspot left-aligned" style="top: 10%; right: calc(50% - 6px);">
+            <div class="inline-card">
+              <div class="card-tag">CAPACITY / OPTICS</div>
+              <h3 class="card-title">Bandwidth Architecture</h3>
+              <p class="card-body">Modern submarine cables transmit data at up to <strong>340 Tbps</strong>. Light
+                pulses travel through hair-thin glass fibers at 200,000 km/s, bouncing continuously.</p>
+              <div class="card-stat-row">
+                <div class="card-stat"><span>340 Tbps</span><small>Peak Capacity</small></div>
+                <div class="card-stat"><span>99%</span><small>Global Data</small></div>
+              </div>
+            </div>
+            <div class="hotspot-line"></div>
+            <div class="hotspot-pulse"></div>
+          </div>
+
+          <div class="hotspot right-aligned" style="top: 21%; left: calc(50% - 6px);">
+            <div class="hotspot-pulse"></div>
+            <div class="hotspot-line"></div>
+            <div class="inline-card">
+              <div class="card-tag">PHYSICS / ELECTRICAL</div>
+              <h3 class="card-title">Fighting Signal Decay</h3>
+              <p class="card-body">Optical repeaters sit every 80 km on the ocean floor to boost fading light, powered
+                by <strong>10,000V DC</strong> sent through the cable's core from shore.</p>
+              <div class="card-stat-row">
+                <div class="card-stat"><span>10kV</span><small>Power Feed</small></div>
+                <div class="card-stat"><span>80km</span><small>Repeater Spacing</small></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hotspot left-aligned" style="top: 32%; right: calc(50% - 6px);">
+            <div class="inline-card">
+              <div class="card-tag">BIOLOGICAL THREATS</div>
+              <h3 class="card-title">Sharks vs. The Internet</h3>
+              <p class="card-body">Sharks occasionally bite through cables, attracted to their <strong>electromagnetic
+                  fields</strong>. Today, vulnerable zones use steel and Kevlar-like armor wrapping.</p>
+              <div class="card-stat-row">
+                <div class="card-stat"><span>200+</span><small>Faults/Year</small></div>
+              </div>
+            </div>
+            <div class="hotspot-line"></div>
+            <div class="hotspot-pulse"></div>
+          </div>
+
+          <div class="hotspot right-aligned" style="top: 43%; left: calc(50% - 6px);">
+            <div class="hotspot-pulse"></div>
+            <div class="hotspot-line"></div>
+            <div class="inline-card">
+              <div class="card-tag">ENGINEERING / DEPLOYMENT</div>
+              <h3 class="card-title">The Cable-Laying Giants</h3>
+              <p class="card-body">Specialized cable ships hold up to 8,000 km of cable. They move at 6 knots while
+                laying cable with millimeter precision using GPS and sonar arrays.</p>
+              <div class="card-stat-row">
+                <div class="card-stat"><span>$300M</span><small>Per System</small></div>
+                <div class="card-stat"><span>18mo</span><small>Deployment Time</small></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hotspot left-aligned" style="top: 54%; right: calc(50% - 6px);">
+            <div class="inline-card">
+              <div class="card-tag">GEOPOLITICS / VULNERABILITY</div>
+              <h3 class="card-title">Chokepoints & Severance</h3>
+              <p class="card-body">A ship's dragged anchor or a deliberate submarine attack can silence a country. In
+                2022, Tonga was completely isolated for five weeks after a volcanic eruption severed its only link.</p>
+              <div class="card-stat-row">
+                <div class="card-stat"><span>70%</span><small>Anchor/Fishing Faults</small></div>
+                <div class="card-stat"><span>CRITICAL</span><small>NATO Threat Level</small></div>
+              </div>
+            </div>
+            <div class="hotspot-line"></div>
+            <div class="hotspot-pulse"></div>
+          </div>
+
+          <div class="hotspot right-aligned" style="top: 65%; left: calc(50% - 6px);">
+            <div class="hotspot-pulse"></div>
+            <div class="hotspot-line"></div>
+            <div class="inline-card">
+              <div class="card-tag">INFRASTRUCTURE / LANDING</div>
+              <h3 class="card-title">Landing Stations</h3>
+              <p class="card-body">The cables emerge from the sea into hyper-secure concrete bunkers on beaches
+                worldwide, where 10,000V power is injected and light is routed to terrestrial data centers.</p>
+              <div class="card-stat-row">
+                <div class="card-stat"><span>1.5m</span><small>Burial Depth</small></div>
+                <div class="card-stat"><span>24/7</span><small>Security Monitoring</small></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hotspot left-aligned" style="top: 76%; right: calc(50% - 6px);">
+            <div class="inline-card">
+              <div class="card-tag">MAINTENANCE / LOGISTICS</div>
+              <h3 class="card-title">Repair Expeditions</h3>
+              <p class="card-body">When a break occurs, ROVs (Remotely Operated Vehicles) dive thousands of meters to
+                retrieve the ends, haul them to the surface ship, and splice glass strands thinner than a hair.</p>
+              <div class="card-stat-row">
+                <div class="card-stat"><span>$100K</span><small>Daily Ship Cost</small></div>
+                <div class="card-stat"><span>2-3</span><small>Weeks to Fix</small></div>
+              </div>
+            </div>
+            <div class="hotspot-line"></div>
+            <div class="hotspot-pulse"></div>
+          </div>
+
+          <div class="hotspot right-aligned" style="top: 87%; left: calc(50% - 6px);">
+            <div class="hotspot-pulse"></div>
+            <div class="hotspot-line"></div>
+            <div class="inline-card">
+              <div class="card-tag">OWNERSHIP / TOPOLOGY</div>
+              <h3 class="card-title">The Private Backbone</h3>
+              <p class="card-body">Historically funded by telecom consortiums, today over 60% of new transoceanic
+                capacity is being built exclusively by Google, Meta, Amazon, and Microsoft.</p>
+              <div class="card-stat-row">
+                <div class="card-stat"><span>5</span><small>Tech Giants</small></div>
+                <div class="card-stat"><span>60%</span><small>New Capacity Ownership</small></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <section id="truth" class="section">
+        <div class="truth-inner">
+          <div class="truth-eyebrow">REALITY CHECK</div>
+          <h2 class="truth-title">
+            <span class="reveal-word">THE</span>
+            <span class="reveal-word acc">"CLOUD"</span>
+            <span class="reveal-word">IS</span>
+            <span class="reveal-word">A</span>
+            <span class="reveal-word acc">LIE.</span>
+          </h2>
+          <div class="truth-cols">
+            <div class="truth-col">
+              <div class="truth-num">01</div>
+              <h3>Owned by Giants</h3>
+              <p>Over 95% of the world's internet capacity is carried by cables owned or co-owned by just five
+                companies: Google, Meta, Amazon, Microsoft, and a handful of telecoms. The internet is not neutral
+                infrastructure—it is privately held.</p>
+            </div>
+            <div class="truth-col">
+              <div class="truth-num">02</div>
+              <h3>Geopolitically Volatile</h3>
+              <p>In 2022, cables were severed near Tonga, isolating 100,000 people for five weeks. In wartime,
+                submarines could sever internet between continents. NATO has identified submarine cable attacks as a
+                critical national security threat.</p>
+            </div>
+            <div class="truth-col">
+              <div class="truth-num">03</div>
+              <h3>Physically Fragile</h3>
+              <p>Near shorelines, cables are buried under the seabed but in deep water they simply rest on the ocean
+                floor—as thin as a garden hose. A dragging ship anchor in the wrong place can silence a region's
+                internet instantly.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <section id="globe-section" class="section">
+        <div class="globe-header">
+          <div class="globe-eyebrow">THE NETWORK</div>
+          <h2 class="globe-title">LIVE CABLE MAP</h2>
+          <p class="globe-sub">Every glowing line is a real submarine cable route connecting our world's information</p>
+        </div>
+        <div id="globe-container"></div>
+        <div class="globe-legend">
+          <div class="legend-item"><span class="legend-dot green"></span> Normal routes</div>
+          <div class="legend-item"><span class="legend-dot cyan"></span> High-speed routes</div>
+          <div class="legend-item"><span class="legend-dot gray"></span> Planned / Under construction</div>
+        </div>
+        <p class="globe-source">Route data sourced from <a href="https://submarinecablemap.com" target="_blank"
+            rel="noopener">TeleGeography SubmarineCableMap</a> &amp; ITU Global ICT Statistics</p>
+      </section>
+
+
+      <section id="outro" class="section">
+        <div class="outro-inner">
+          <div class="outro-glitch" data-text="THE END">THE END</div>
+          <h2 class="outro-title">It runs 24/7. You've never seen it. Now you know.</h2>
+          <p class="outro-body">The next time you send a message from Dhaka to New York, remember: your data traveled to
+            a cable landing station, was converted to light, shot through a glass fiber thinner than your finger across
+            15,000 km of crushing darkness—and arrived in 60 milliseconds.</p>
+          <div class="outro-cta-row">
+            <a href="https://www.submarinecablemap.com" target="_blank" rel="noopener" class="btn-primary">Explore Real
+              Cable Map ↗</a>
+          </div>
+          <p class="outro-credit">
+            Built for INIT 6.0 Web Design Competition · "The Nervous System of the Earth"<br />
+            © 2026 <a href="https://instagram.com/saqin_noor" target="_blank" rel="noopener">A.K.M. Saqin Noor</a>
+          </p>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+</body>
+
+</html>
