@@ -9,12 +9,14 @@
     content="An immersive documentary about the physical backbone of the internet: the submarine cable network at the bottom of the ocean." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Syne:wght@400;600;700;800&display=swap"
+    rel="stylesheet" />
 </head>
 
 <body>
 
-  <!-- Loader -->
+
   <div class="acid-loader">
     <div class="loader-grid"></div>
     <div class="loader-scan"></div>
@@ -25,22 +27,23 @@
     </div>
   </div>
 
-  <!-- CURSOR -->
+
   <div id="cursor"></div>
   <div id="cursor-dot"></div>
 
-  <!-- Overlays -->
+
   <canvas id="noise-canvas"></canvas>
 
-  <!-- MAIN WRAPPER -->
+
   <div id="smooth-wrapper">
     <div id="smooth-content">
 
-      <!-- Hero -->
+
       <section id="hero" class="section">
         <div class="star-field" id="star-field"></div>
         <div class="hero-content">
-          <div class="hero-eyebrow glitch-text" data-text="DOCUMENTARY / 2026">DOCUMENTARY / 2026</div>
+          <div class="hero-eyebrow glitch-text" data-text="A PROJECT BY SAQIN NOOR">A PROJECT BY SAQIN
+            NOOR</div>
           <h1 class="hero-title" id="hero-title">
             <span class="line" data-text="NERVOUS">NERVOUS</span>
             <span class="line accent" data-text="SYSTEM">SYSTEM</span>
@@ -48,7 +51,8 @@
             <span class="line accent" data-text="EARTH">EARTH</span>
           </h1>
           <div class="hero-reveal-wrap">
-            <p class="hero-subtitle">You think the internet lives in the cloud. It lies at the <em>bottom of the ocean.</em></p>
+            <p class="hero-subtitle">You think the internet lives in the cloud. It lies at the <em>bottom of the
+                ocean.</em></p>
           </div>
           <div class="hero-stats">
             <div class="stat-item">
@@ -72,14 +76,15 @@
             <span>SCROLL TO DESCEND</span>
             <div class="scroll-arrow">
               <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="24" cy="24" r="23" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M16 21L24 30L32 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="24" cy="24" r="23" stroke="currentColor" stroke-width="1.5" />
+                <path d="M16 21L24 30L32 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
               </svg>
             </div>
           </div>
 
         </div>
-        <!-- Depth meter -->
+
         <div class="depth-gauge">
           <div class="depth-label">DEPTH</div>
           <div class="depth-value" id="depth-value">0<span>M</span></div>
@@ -88,44 +93,33 @@
           </div>
         </div>
       </section>
+      
 
-      <!-- Descent -->
+      <div class="editorial-marquee">
+        <div class="marquee-track">
+          <span class="marquee-item">// 1.4 MILLION KM OF NEURAL INFRASTRUCTURE // THE WORLD'S DATA LIES AT THE BOTTOM OF THE OCEAN // SUB-SEA CONNECTIVITY // 99% OF GLOBAL TRAFFIC // RADIUS DEPTH: -11,000M // NO SIGNAL // NERVOUS SYSTEM OF THE EARTH </span>
+          <span class="marquee-item">// 1.4 MILLION KM OF NEURAL INFRASTRUCTURE // THE WORLD'S DATA LIES AT THE BOTTOM OF THE OCEAN // SUB-SEA CONNECTIVITY // 99% OF GLOBAL TRAFFIC // RADIUS DEPTH: -11,000M // NO SIGNAL // NERVOUS SYSTEM OF THE EARTH </span>
+        </div>
+      </div>
+
+
       <section id="descent" class="section">
+
         <div class="descent-bg" id="descent-bg"></div>
         <div id="particles-container"></div>
 
-        <!-- SVG Fiber Bundle (Absolute, full 400vh height) -->
+
         <div class="cable-container">
-          <svg id="cable-svg" viewBox="0 0 400 4000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="fiberGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#99eb1e" />
-                <stop offset="40%" stop-color="#c5f56b" />
-                <stop offset="100%" stop-color="#99eb1e" />
-              </linearGradient>
-            </defs>
-
-            <!-- Core Casing -->
-            <path id="cable-casing" d="M 200 0 L 200 4000" fill="none" stroke="#0a0a0a" stroke-width="24"
-              stroke-linecap="round" />
-
-            <!-- Fiber 1 (Lime Green) -->
-            <path class="fiber-glow" d="M 197 0 L 197 4000" fill="none" stroke="url(#fiberGrad)" stroke-width="12"
-              opacity="0.12" />
-            <path class="fiber-glow" d="M 197 0 L 197 4000" fill="none" stroke="url(#fiberGrad)" stroke-width="6"
-              opacity="0.25" />
-            <path class="fiber-line" d="M 197 0 L 197 4000" fill="none" stroke="url(#fiberGrad)" stroke-width="2" />
-
-            <!-- Fiber 2 (Lime Green Accent) -->
-            <path class="fiber-glow" d="M 203 0 L 203 4000" fill="none" stroke="#c5f56b" stroke-width="12"
-              opacity="0.08" />
-            <path class="fiber-glow" d="M 203 0 L 203 4000" fill="none" stroke="#c5f56b" stroke-width="6"
-              opacity="0.2" />
-            <path class="fiber-line" d="M 203 0 L 203 4000" fill="none" stroke="#c5f56b" stroke-width="2" />
+          <svg id="cable-svg" viewBox="0 0 2000 4000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 1000 0 L 1000 4000" fill="none" stroke="#99eb1e" stroke-width="140" opacity="0.08" stroke-linecap="butt" />
+            <path d="M 1000 0 L 1000 4000" fill="none" stroke="#99eb1e" stroke-width="70" opacity="0.15" stroke-linecap="butt" />
+            <path class="fiber-glow" d="M 1000 0 L 1000 4000" fill="none" stroke="#99eb1e" stroke-width="32" opacity="0.6" stroke-linecap="butt" />
+            <path class="fiber-glow" d="M 1000 0 L 1000 4000" fill="none" stroke="#99eb1e" stroke-width="16" opacity="1" stroke-linecap="butt" />
+            <path class="fiber-line" d="M 1000 0 L 1000 4000" fill="none" stroke="#ffffff" stroke-width="6" opacity="1" stroke-linecap="butt" />
           </svg>
         </div>
 
-        <!-- Floating wireframe sea creatures -->
+
         <div class="creature" id="creature-1" style="top: 10%; left: 8%;" data-speed="0.8"><canvas
             class="creature-canvas" id="fish-1" width="240" height="140"></canvas></div>
         <div class="creature" id="creature-2" style="top: 25%; right: 6%;" data-speed="1.2"><canvas
@@ -135,7 +129,7 @@
         <div class="creature" id="creature-4" style="top: 65%; right: 8%;" data-speed="1.5"><canvas
             class="creature-canvas" id="anglerfish-1" width="240" height="160"></canvas></div>
 
-        <!-- HUD Hotspots -->
+
         <div class="cable-hotspots" id="cable-hotspots">
 
           <div class="hotspot left-aligned" style="top: 10%; right: calc(50% - 7px);">
@@ -262,7 +256,7 @@
 
       </section>
 
-      <!-- Truth Panel -->
+
       <section id="truth" class="section">
         <div class="truth-inner">
           <div class="truth-eyebrow">REALITY CHECK</div>
@@ -299,7 +293,7 @@
         </div>
       </section>
 
-      <!-- Globe -->
+
       <section id="globe-section" class="section">
         <div class="globe-header">
           <div class="globe-eyebrow">THE NETWORK</div>
@@ -314,7 +308,7 @@
         </div>
       </section>
 
-      <!-- Outro -->
+
       <section id="outro" class="section">
         <div class="outro-inner">
           <div class="outro-glitch" data-text="THE END?">THE END?</div>
@@ -329,14 +323,15 @@
               class="btn-ghost">View Data Source ↗</a>
           </div>
           <p class="outro-credit">
-            Built for INIT 6.0 Web Design Competition · "The Nervous System of the Earth"<br/>
-            © 2026 <a href="https://instagram.com/saqin_noor" target="_blank" rel="noopener" style="color: inherit; text-decoration: underline;">A.K.M. Saqin Noor</a>
+            Built for INIT 6.0 Web Design Competition · "The Nervous System of the Earth"<br />
+            © 2026 <a href="https://instagram.com/saqin_noor" target="_blank" rel="noopener"
+              style="color: inherit; text-decoration: underline;">A.K.M. Saqin Noor</a>
           </p>
         </div>
       </section>
 
-    </div><!-- /smooth-content -->
-  </div><!-- /smooth-wrapper -->
+    </div>
+  </div>
 
   <script type="module" src="/src/main.js"></script>
 </body>

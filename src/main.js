@@ -6,7 +6,6 @@ import * as THREE from 'three';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Loader
 function initLoader(onHandoff) {
   return new Promise(resolve => {
     const counter = { val: 0 };
@@ -71,7 +70,7 @@ function initLoader(onHandoff) {
   });
 }
 
-// Custom Cursor
+
 function initCursor() {
   const cursor = document.getElementById('cursor');
   const dot = document.getElementById('cursor-dot');
@@ -89,7 +88,7 @@ function initCursor() {
   });
 }
 
-// Smooth Scroll (Lenis)
+
 function initLenis() {
   const lenis = new Lenis({ lerp: 0.08, smooth: true });
   lenis.on('scroll', ScrollTrigger.update);
@@ -98,7 +97,7 @@ function initLenis() {
   return lenis;
 }
 
-// Stars via GPU-accelerated Canvas
+
 function initStars() {
   const field = document.getElementById('star-field');
   const canvas = document.createElement('canvas');
@@ -134,7 +133,7 @@ function initStars() {
   });
 }
 
-// Wireframe Creatures
+
 function drawWireframeFish(canvasId, color) {
   const canvas = document.getElementById(canvasId);
   if (!canvas) return;
@@ -177,7 +176,6 @@ function drawWireframeAnglerfish(canvasId, color) {
   for (let i = 0; i < 18; i += 3) { ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(pts[i].x, pts[i].y); ctx.stroke(); }
   ctx.beginPath(); ctx.moveTo(cx - rx * 0.2, cy - ry); ctx.bezierCurveTo(cx, cy - ry * 1.8, cx + rx * 0.6, cy - ry * 1.4, cx + rx * 0.5, cy - ry * 0.7); ctx.stroke();
   ctx.globalAlpha = 0.9; ctx.fillStyle = color; ctx.beginPath(); ctx.arc(cx + rx * 0.5, cy - ry * 0.7, 6, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 0.6;
-  // teeth
   ctx.beginPath(); ctx.moveTo(cx - rx, cy + ry * 0.1); ctx.lineTo(cx - rx * 1.15, cy - ry * 0.2);
   for (let t = 0; t <= 7; t++) { const ty = cy - ry * 0.2 + (t * ry * 0.45 / 7); ctx.lineTo(cx - rx * 1.15 + (t % 2 === 0 ? 6 : 18), ty); }
   ctx.stroke();
@@ -190,13 +188,13 @@ function initCreatures() {
   drawWireframeAnglerfish('anglerfish-1', '#99eb1e');
 }
 
-// Counters
+
 function animateCounter(el, target, duration = 2) {
   const obj = { val: 0 };
   gsap.to(obj, { val: target, duration, ease: 'power2.out', onUpdate: () => { el.textContent = Math.floor(obj.val).toLocaleString(); } });
 }
 
-// Three.js Globe
+
 function initGlobe() {
   const container = document.getElementById('globe-container');
   if (!container) return;
@@ -234,7 +232,7 @@ function initGlobe() {
   const atmMat = new THREE.MeshBasicMaterial({ color: 0x99eb1e, transparent: true, opacity: 0.06, side: THREE.BackSide });
   scene.add(new THREE.Mesh(atmGeo, atmMat));
 
-  // Lights
+
   const ambient = new THREE.AmbientLight(0x020612, 1.8);
   scene.add(ambient);
   const dirLight = new THREE.DirectionalLight(0x99eb1e, 0.8);
@@ -244,7 +242,7 @@ function initGlobe() {
   dirLight2.position.set(-5, -2, -3);
   scene.add(dirLight2);
 
-  // Geo helpers
+
   function latLngToVec3(lat, lng, r = 1.02) {
     const phi = (90 - lat) * Math.PI / 180;
     const theta = (lng + 180) * Math.PI / 180;
@@ -265,7 +263,6 @@ function initGlobe() {
     const points = [];
     for (let i = 0; i <= segments; i++) {
       const t = i / segments;
-      // Quadratic bezier
       const p = new THREE.Vector3()
         .addScaledVector(start, (1 - t) * (1 - t))
         .addScaledVector(mid, 2 * (1 - t) * t)
@@ -286,7 +283,6 @@ function initGlobe() {
     return mesh;
   }
 
-  // Cable data — real routes
   const cables = [
     [40.7, -74.0, 51.5, -0.1, 0x99eb1e],
     [38.7, -9.1, 25.8, -80.2, 0x99eb1e],
@@ -310,7 +306,6 @@ function initGlobe() {
     [13.1, 80.3, 25.2, 55.3, 0x99eb1e],
   ];
 
-  // Landing point cities
   const cities = [
     [40.7, -74.0, 0x99eb1e, 'New York'], [51.5, -0.1, 0x99eb1e, 'London'],
     [38.7, -9.1, 0x99eb1e, 'Lisbon'], [25.8, -80.2, 0x99eb1e, 'Miami'],
@@ -321,18 +316,15 @@ function initGlobe() {
     [13.1, 80.3, 0x99eb1e, 'Chennai'], [19.1, 72.9, 0x7e7f9a, 'Mumbai'],
   ];
 
-  // Add arcs
   cables.forEach(([sLat, sLng, eLat, eLng, col]) => {
     const arc = createArc(sLat, sLng, eLat, eLng, col);
     scene.add(arc);
   });
 
-  // Add city dots
   cities.forEach(([lat, lng, col]) => {
     scene.add(createPoint(lat, lng, col));
   });
 
-  // Pulse rings on cities
   const pulseRings = [];
   cities.forEach(([lat, lng, col]) => {
     const pos = latLngToVec3(lat, lng, 1.03);
@@ -346,7 +338,6 @@ function initGlobe() {
     pulseRings.push(ring);
   });
 
-  // Rotation state
   let isDragging = false, prevMouse = { x: 0, y: 0 };
   let rotX = 0, rotY = 0, velX = 0, velY = 0;
 
@@ -362,7 +353,6 @@ function initGlobe() {
   dom.addEventListener('mouseup', () => { isDragging = false; });
   dom.addEventListener('mouseleave', () => { isDragging = false; });
 
-  // Touch support
   let lastTouch = null;
   dom.addEventListener('touchstart', e => { lastTouch = e.touches[0]; });
   dom.addEventListener('touchmove', e => {
@@ -374,7 +364,6 @@ function initGlobe() {
     lastTouch = e.touches[0];
   });
 
-  // Resize
   function onResize() {
     const nW = container.clientWidth, nH = container.clientHeight;
     camera.aspect = nW / nH; camera.updateProjectionMatrix();
@@ -382,7 +371,6 @@ function initGlobe() {
   }
   window.addEventListener('resize', onResize);
 
-  // Animate
   let globeVisible = false;
   ScrollTrigger.create({
     trigger: '#globe-section',
@@ -396,15 +384,13 @@ function initGlobe() {
     requestAnimationFrame(animate);
     const t = clock.getElapsedTime();
 
-    // Auto-rotate + inertia
     if (!isDragging) {
       velX *= 0.95; velY *= 0.95;
-      rotY += 0.0015; // slow auto-rotation
+      rotY += 0.0015; 
     }
     rotX += (velX - rotX) * 0;
     sphere.rotation.x = rotX;
     sphere.rotation.y += velY + (isDragging ? 0 : 0.0015);
-    // Apply all children rotation
     scene.children.forEach(c => {
       if (c !== sphere && c.type !== 'AmbientLight' && c.type !== 'DirectionalLight') {
         c.rotation.x = sphere.rotation.x;
@@ -412,7 +398,7 @@ function initGlobe() {
       }
     });
 
-    // Pulse rings
+
     pulseRings.forEach((ring, i) => {
       const phase = ring.userData.phase;
       const s = 1 + 0.4 * Math.abs(Math.sin(t * 1.5 + phase));
@@ -425,9 +411,9 @@ function initGlobe() {
   animate();
 }
 
-// GSAP Timelines
+
 function initAnimations() {
-  // Hero entrance
+
   gsap.set('.hero-subtitle', { y: '100%' });
   gsap.set(['.outro-title', '.outro-body', '.outro-cta-row'], { y: 40 });
   gsap.set('.truth-eyebrow', { y: 20 });
@@ -440,12 +426,11 @@ function initAnimations() {
     .to('.stat-item', { opacity: 1, duration: 0.5, stagger: 0.12, ease: 'power2.out' }, '-=0.4')
     .to('.scroll-cue', { opacity: 1, duration: 0.5 }, '-=0.2');
 
-  // Counters
   document.querySelectorAll('.stat-num').forEach(el => {
     ScrollTrigger.create({ trigger: el, start: 'top 80%', once: true, onEnter: () => animateCounter(el, parseInt(el.dataset.val, 10)) });
   });
 
-  // Depth gauge
+
   const gauge = document.querySelector('.depth-gauge');
   const depthVal = document.getElementById('depth-value');
   const depthBar = document.getElementById('depth-bar');
@@ -458,7 +443,7 @@ function initAnimations() {
     }
   });
 
-  // Particles Parallax
+
   const pContainer = document.getElementById('particles-container');
   if (pContainer) {
     for (let i = 0; i < 60; i++) {
@@ -478,7 +463,7 @@ function initAnimations() {
     }
   }
 
-  // Fiber Optic Bundle Draw
+
   const fibers = document.querySelectorAll('#cable-casing, .fiber-line, .fiber-glow');
   fibers.forEach(path => {
     const len = path.getTotalLength() || 6500;
@@ -489,13 +474,13 @@ function initAnimations() {
     });
   });
 
-  // Flowing tracer data pulse
+
   const pulseFiber = document.querySelector('.pulse-fiber');
   if (pulseFiber) {
     gsap.to(pulseFiber, { strokeDashoffset: -2000, duration: 40, ease: 'none', repeat: -1 });
   }
 
-  // Creatures
+
   document.querySelectorAll('.creature').forEach((creature, i) => {
     const speed = parseFloat(creature.dataset.speed) || 0.3;
     ScrollTrigger.create({
@@ -505,31 +490,51 @@ function initAnimations() {
         gsap.to(creature, { y: `+=${20 + i * 8}`, duration: 3 + i * 0.5, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: i * 0.4 });
       }
     });
-    // Slight parallax
     ScrollTrigger.create({
       trigger: '#descent', start: 'top bottom', end: 'bottom top', scrub: true,
       onUpdate: self => gsap.set(creature, { y: (self.progress - 0.5) * 400 * speed })
     });
   });
 
-  // HUD Hotspots (Inline Cards)
+
   const hotspots = document.querySelectorAll('.hotspot');
   hotspots.forEach((hs, i) => {
+    const line = hs.querySelector('.hotspot-line');
+    const card = hs.querySelector('.inline-card');
+    const content = card.querySelectorAll(':scope > *');
+    const pulse = hs.querySelector('.hotspot-pulse');
     const isLeft = hs.classList.contains('left-aligned');
-    gsap.set(hs, { opacity: 0, x: isLeft ? -50 : 50 });
+    gsap.set(hs, { opacity: 1 });
+    gsap.set(pulse, { scale: 0, opacity: 0 });
+    gsap.set(line, { width: 0 });
+    const clipStart = isLeft 
+      ? 'polygon(100% 50%, 100% 50%, 100% 50%, 100% 50%, 100% 50%, 100% 50%)' 
+      : 'polygon(0% 50%, 0% 50%, 0% 50%, 0% 50%, 0% 50%, 0% 50%)';
+    const clipEnd = 'polygon(0% 5%, 5% 0%, 100% 0%, 100% 95%, 95% 100%, 0% 100%)';
+    
+    gsap.set(card, { autoAlpha: 0, clipPath: clipStart });
+    gsap.set(content, { autoAlpha: 0, y: 15 });
+
+    const tl = gsap.timeline({ paused: true });
+
+    tl.to(pulse, { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(2)' })
+      .to(line, { width: 80, duration: 0.4, ease: 'expo.inOut' }, '-=0.1')
+      .to(card, { autoAlpha: 1, duration: 0.05 }, '-=0.1')
+      .to(card, { clipPath: clipEnd, duration: 0.5, ease: 'power4.out' }, '<')
+      .to(content, { autoAlpha: 1, y: 0, duration: 0.4, stagger: 0.05, ease: 'power2.out' }, '-=0.3');
 
     ScrollTrigger.create({
       trigger: hs,
-      start: 'center center',
-      end: 'bottom -20%',
-      onEnter: () => gsap.to(hs, { opacity: 1, x: 0, duration: 1, ease: 'power3.out' }),
-      onLeaveBack: () => gsap.to(hs, { opacity: 0, x: isLeft ? -50 : 50, duration: 0.5 }),
+      start: 'top 55%',
+      end: 'bottom 10%',
+      onEnter: () => tl.play(),
+      onLeaveBack: () => tl.reverse(),
       onLeave: () => gsap.to(hs, { opacity: 0, y: -30, duration: 0.5 }),
-      onEnterBack: () => gsap.to(hs, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' })
+      onEnterBack: () => gsap.to(hs, { opacity: 1, y: 0, duration: 0.5, onComplete: () => tl.play() })
     });
   });
 
-  // Truth section
+
   ScrollTrigger.create({
     trigger: '#truth', start: 'top 65%', once: true,
     onEnter: () => {
@@ -539,7 +544,7 @@ function initAnimations() {
     }
   });
 
-  // Globe section entrance
+
   ScrollTrigger.create({
     trigger: '#globe-section', start: 'top 70%', once: true,
     onEnter: () => {
@@ -550,7 +555,7 @@ function initAnimations() {
     }
   });
 
-  // Outro
+
   ScrollTrigger.create({
     trigger: '#outro', start: 'top 70%', once: true,
     onEnter: () => {
@@ -565,20 +570,15 @@ function initAnimations() {
   return heroTl;
 }
 
-// Entry Point
+
 async function main() {
-  // Initialize everything except the visible hero intro
   initCursor();
   initStars();
   initCreatures();
   const lenis = initLenis();
   initGlobe();
-  
-  // Set up all scroll triggers and grab the paused hero timeline
   ScrollTrigger.refresh();
   const introTl = initAnimations();
-
-  // Wait for the loader to finish obstructing the screen
   await initLoader(() => {
     if (introTl) introTl.play();
   });
