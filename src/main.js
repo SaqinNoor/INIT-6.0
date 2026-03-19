@@ -9,22 +9,62 @@ gsap.registerPlugin(ScrollTrigger);
 // Loader
 function initLoader() {
   return new Promise(resolve => {
-    const bar = document.querySelector('.loader-bar');
-    const depthEl = document.getElementById('loader-depth');
-    const loader = document.getElementById('loader');
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += Math.random() * 3 + 0.5;
-      if (progress >= 100) {
-        progress = 100;
-        clearInterval(interval);
-        setTimeout(() => {
-          gsap.to(loader, { opacity: 0, duration: 0.6, ease: 'power2.in', onComplete: () => { loader.style.display = 'none'; resolve(); } });
-        }, 400);
+    const counter = { val: 0 };
+    const counterEl = document.querySelector('.loader-counter');
+    const statusEl = document.querySelector('.loader-status');
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&";
+
+    function scrambleText(element, finalString) {
+      let iterations = 0;
+      const interval = setInterval(() => {
+        element.innerText = finalString.split("").map((letter, index) => {
+          if (index < iterations) return finalString[index];
+          return chars[Math.floor(Math.random() * 26)];
+        }).join("");
+        if (iterations >= finalString.length) clearInterval(interval);
+        iterations += 1 / 2;
+      }, 30);
+    }
+
+    const tl = gsap.timeline();
+    
+    gsap.to('.loader-grid', {
+      y: "20%", rotateX: 50, scale: 1.5,
+      duration: 3, ease: "none", repeat: -1, yoyo: true
+    });
+
+    tl.to(counter, {
+      val: 100,
+      duration: 3.5,
+      ease: "power4.inOut",
+      onUpdate: () => {
+        const val = Math.floor(counter.val);
+        if (counterEl) counterEl.innerText = val.toString().padStart(2, '0');
+        if (statusEl) {
+          if (val === 15) scrambleText(statusEl, "LOADING CORE...");
+          if (val === 40) scrambleText(statusEl, "OPTIMIZING ASSETS...");
+          if (val === 75) scrambleText(statusEl, "ESTABLISHING UPLINK...");
+          if (val === 98) scrambleText(statusEl, "ACCESS GRANTED");
+        }
       }
-      bar.style.width = progress + '%';
-      depthEl.textContent = Math.floor(progress * 110).toLocaleString();
-    }, 40);
+    });
+
+    tl.to('.loader-line', { width: '100vw', duration: 3, ease: "expo.out" }, '<');
+
+    tl.to('.loader-content', {
+      filter: "blur(20px)",
+      opacity: 0,
+      scale: 0.9,
+      duration: 0.5,
+      ease: "power2.in"
+    });
+
+    tl.to('.acid-loader', {
+      yPercent: -100,
+      duration: 1.2,
+      ease: "power4.inOut",
+      onComplete: resolve
+    });
   });
 }
 
@@ -117,10 +157,10 @@ function drawWireframeAnglerfish(canvasId, color) {
 }
 
 function initCreatures() {
-  drawWireframeFish('fish-1', '#00ffe7');
-  drawWireframeJellyfish('jellyfish-1', '#ff2cf6');
-  drawWireframeFish('fish-2', '#ff6b00');
-  drawWireframeAnglerfish('anglerfish-1', '#00ffe7');
+  drawWireframeFish('fish-1', '#99eb1e');
+  drawWireframeJellyfish('jellyfish-1', '#333333');
+  drawWireframeFish('fish-2', '#7e7f9a');
+  drawWireframeAnglerfish('anglerfish-1', '#99eb1e');
 }
 
 // Counters
@@ -160,20 +200,20 @@ function initGlobe() {
   scene.add(sphere);
 
   const wireGeo = new THREE.SphereGeometry(1.002, 32, 32);
-  const wireMat = new THREE.MeshBasicMaterial({ color: 0x00ffe7, wireframe: true, transparent: true, opacity: 0.04 });
+  const wireMat = new THREE.MeshBasicMaterial({ color: 0x99eb1e, wireframe: true, transparent: true, opacity: 0.04 });
   scene.add(new THREE.Mesh(wireGeo, wireMat));
 
   const atmGeo = new THREE.SphereGeometry(1.12, 64, 64);
-  const atmMat = new THREE.MeshBasicMaterial({ color: 0x00ffe7, transparent: true, opacity: 0.06, side: THREE.BackSide });
+  const atmMat = new THREE.MeshBasicMaterial({ color: 0x99eb1e, transparent: true, opacity: 0.06, side: THREE.BackSide });
   scene.add(new THREE.Mesh(atmGeo, atmMat));
 
   // Lights
-  const ambient = new THREE.AmbientLight(0x003355, 1.5);
+  const ambient = new THREE.AmbientLight(0x020612, 1.8);
   scene.add(ambient);
-  const dirLight = new THREE.DirectionalLight(0x00ffe7, 0.8);
+  const dirLight = new THREE.DirectionalLight(0x99eb1e, 0.8);
   dirLight.position.set(5, 3, 5);
   scene.add(dirLight);
-  const dirLight2 = new THREE.DirectionalLight(0xff2cf6, 0.4);
+  const dirLight2 = new THREE.DirectionalLight(0x333333, 0.4);
   dirLight2.position.set(-5, -2, -3);
   scene.add(dirLight2);
 
@@ -221,37 +261,37 @@ function initGlobe() {
 
   // Cable data — real routes
   const cables = [
-    [40.7, -74.0, 51.5, -0.1, 0x00ffe7],
-    [38.7, -9.1, 25.8, -80.2, 0x00ffe7],
-    [51.5, -0.1, 38.7, -9.1, 0x00ffe7],
-    [40.7, -74.0, -23.5, -46.6, 0x00ffe7],
-    [37.8, -122.4, 35.7, 139.7, 0xff2cf6],
-    [32.1, -117.1, 1.3, 103.8, 0xff2cf6],
-    [35.7, 139.7, 22.3, 114.2, 0xff2cf6],
-    [22.3, 114.2, 1.3, 103.8, 0xff2cf6],
-    [37.8, -122.4, -33.9, 151.2, 0xff2cf6],
-    [35.7, 139.7, -33.9, 151.2, 0xff2cf6],
-    [51.5, -0.1, 25.2, 55.3, 0x00ffe7],
-    [25.2, 55.3, 1.3, 103.8, 0x00ffe7],
-    [13.1, 80.3, 1.3, 103.8, 0x00ffe7],
-    [19.1, 72.9, -33.9, 18.4, 0xff6b00],
-    [51.5, -0.1, -33.9, 18.4, 0xff6b00],
-    [-33.9, 18.4, -23.5, -46.6, 0xff6b00],
-    [-33.9, 151.2, 1.3, 103.8, 0xff6b00],
-    [-23.5, -46.6, 38.7, -9.1, 0xff2cf6],
-    [1.3, 103.8, 13.1, 80.3, 0xff2cf6],
-    [13.1, 80.3, 25.2, 55.3, 0x00ffe7],
+    [40.7, -74.0, 51.5, -0.1, 0x99eb1e],
+    [38.7, -9.1, 25.8, -80.2, 0x99eb1e],
+    [51.5, -0.1, 38.7, -9.1, 0x99eb1e],
+    [40.7, -74.0, -23.5, -46.6, 0x99eb1e],
+    [37.8, -122.4, 35.7, 139.7, 0x333333],
+    [32.1, -117.1, 1.3, 103.8, 0x333333],
+    [35.7, 139.7, 22.3, 114.2, 0x333333],
+    [22.3, 114.2, 1.3, 103.8, 0x333333],
+    [37.8, -122.4, -33.9, 151.2, 0x333333],
+    [35.7, 139.7, -33.9, 151.2, 0x333333],
+    [51.5, -0.1, 25.2, 55.3, 0x99eb1e],
+    [25.2, 55.3, 1.3, 103.8, 0x99eb1e],
+    [13.1, 80.3, 1.3, 103.8, 0x99eb1e],
+    [19.1, 72.9, -33.9, 18.4, 0x7e7f9a],
+    [51.5, -0.1, -33.9, 18.4, 0x7e7f9a],
+    [-33.9, 18.4, -23.5, -46.6, 0x7e7f9a],
+    [-33.9, 151.2, 1.3, 103.8, 0x7e7f9a],
+    [-23.5, -46.6, 38.7, -9.1, 0x333333],
+    [1.3, 103.8, 13.1, 80.3, 0x333333],
+    [13.1, 80.3, 25.2, 55.3, 0x99eb1e],
   ];
 
   // Landing point cities
   const cities = [
-    [40.7, -74.0, 0x00ffe7, 'New York'], [51.5, -0.1, 0x00ffe7, 'London'],
-    [38.7, -9.1, 0x00ffe7, 'Lisbon'], [25.8, -80.2, 0x00ffe7, 'Miami'],
-    [37.8, -122.4, 0xff2cf6, 'San Francisco'], [35.7, 139.7, 0xff2cf6, 'Tokyo'],
-    [22.3, 114.2, 0xff2cf6, 'Hong Kong'], [1.3, 103.8, 0xff2cf6, 'Singapore'],
-    [-33.9, 151.2, 0xff6b00, 'Sydney'], [-33.9, 18.4, 0xff6b00, 'Cape Town'],
-    [-23.5, -46.6, 0xff6b00, 'São Paulo'], [25.2, 55.3, 0x00ffe7, 'Dubai'],
-    [13.1, 80.3, 0x00ffe7, 'Chennai'], [19.1, 72.9, 0xff6b00, 'Mumbai'],
+    [40.7, -74.0, 0x99eb1e, 'New York'], [51.5, -0.1, 0x99eb1e, 'London'],
+    [38.7, -9.1, 0x99eb1e, 'Lisbon'], [25.8, -80.2, 0x99eb1e, 'Miami'],
+    [37.8, -122.4, 0x333333, 'San Francisco'], [35.7, 139.7, 0x333333, 'Tokyo'],
+    [22.3, 114.2, 0x333333, 'Hong Kong'], [1.3, 103.8, 0x333333, 'Singapore'],
+    [-33.9, 151.2, 0x7e7f9a, 'Sydney'], [-33.9, 18.4, 0x7e7f9a, 'Cape Town'],
+    [-23.5, -46.6, 0x7e7f9a, 'São Paulo'], [25.2, 55.3, 0x99eb1e, 'Dubai'],
+    [13.1, 80.3, 0x99eb1e, 'Chennai'], [19.1, 72.9, 0x7e7f9a, 'Mumbai'],
   ];
 
   // Add arcs
