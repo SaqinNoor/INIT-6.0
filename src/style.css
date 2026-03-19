@@ -316,27 +316,6 @@ body::before {
   pointer-events: none;
 }
 
-.star {
-  position: absolute;
-  border-radius: 50%;
-  background: #fff;
-  animation: twinkle var(--dur, 3s) ease-in-out infinite;
-  animation-delay: var(--del, 0s);
-}
-
-@keyframes twinkle {
-
-  0%,
-  100% {
-    opacity: 0.3;
-    transform: scale(1);
-  }
-
-  50% {
-    opacity: 1;
-    transform: scale(1.5);
-  }
-}
 
 .hero-content {
   position: relative;

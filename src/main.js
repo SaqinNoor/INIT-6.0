@@ -7,7 +7,7 @@ import * as THREE from 'three';
 gsap.registerPlugin(ScrollTrigger);
 
 // Loader
-function initLoader() {
+function initLoader(onHandoff) {
   return new Promise(resolve => {
     const counter = { val: 0 };
     const counterEl = document.querySelector('.loader-counter');
@@ -63,6 +63,9 @@ function initLoader() {
       yPercent: -100,
       duration: 1.2,
       ease: "power4.inOut",
+      onStart: () => {
+        if (onHandoff) setTimeout(onHandoff, 100);
+      },
       onComplete: resolve
     });
   });
@@ -95,16 +98,40 @@ function initLenis() {
   return lenis;
 }
 
-// Stars
+// Stars via GPU-accelerated Canvas
 function initStars() {
   const field = document.getElementById('star-field');
-  for (let i = 0; i < 200; i++) {
-    const s = document.createElement('div');
-    s.className = 'star';
-    const sz = Math.random() * 2.5 + 0.5;
-    s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random() * 100}%;left:${Math.random() * 100}%;--dur:${2 + Math.random() * 4}s;--del:${-Math.random() * 5}s;opacity:${0.2 + Math.random() * 0.8}`;
-    field.appendChild(s);
-  }
+  const canvas = document.createElement('canvas');
+  canvas.style.position = 'absolute';
+  canvas.style.inset = '0';
+  canvas.style.pointerEvents = 'none';
+  field.appendChild(canvas);
+  
+  const ctx = canvas.getContext('2d');
+  let w, h;
+  const setSize = () => { w = canvas.width = field.clientWidth; h = canvas.height = Math.max(field.clientHeight, window.innerHeight); };
+  setSize();
+  window.addEventListener('resize', setSize);
+
+  const stars = Array.from({ length: 150 }, () => ({
+    x: Math.random() * w, 
+    y: Math.random() * h,
+    s: Math.random() * 1.5 + 0.5,
+    a: Math.random() * Math.PI * 2,
+    v: 0.02 + Math.random() * 0.03
+  }));
+
+  gsap.ticker.add(() => {
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = '#ffffff';
+    stars.forEach(st => {
+      st.a += st.v;
+      ctx.globalAlpha = 0.2 + Math.abs(Math.sin(st.a)) * 0.8;
+      ctx.beginPath();
+      ctx.arc(st.x, st.y, st.s, 0, Math.PI * 2);
+      ctx.fill();
+    });
+  });
 }
 
 // Wireframe Creatures
@@ -405,7 +432,7 @@ function initAnimations() {
   gsap.set(['.outro-title', '.outro-body', '.outro-cta-row'], { y: 40 });
   gsap.set('.truth-eyebrow', { y: 20 });
 
-  const heroTl = gsap.timeline({ delay: 0.3 });
+  const heroTl = gsap.timeline({ paused: true });
   heroTl
     .to('.hero-eyebrow', { opacity: 1, duration: 0.8, ease: 'power2.out' })
     .fromTo('.hero-title .line', { y: '110%', skewY: 5 }, { y: '0%', skewY: 0, duration: 1, stagger: 0.08, ease: 'expo.out' }, '-=0.5')
@@ -534,19 +561,27 @@ function initAnimations() {
         .to('.outro-credit', { opacity: 1, duration: 0.6 }, '-=0.3');
     }
   });
+
+  return heroTl;
 }
 
 // Entry Point
 async function main() {
-  await initLoader();
+  // Initialize everything except the visible hero intro
   initCursor();
   initStars();
   initCreatures();
-
   const lenis = initLenis();
-  ScrollTrigger.refresh();
-  initAnimations();
   initGlobe();
+  
+  // Set up all scroll triggers and grab the paused hero timeline
+  ScrollTrigger.refresh();
+  const introTl = initAnimations();
+
+  // Wait for the loader to finish obstructing the screen
+  await initLoader(() => {
+    if (introTl) introTl.play();
+  });
 }
 
 main();
