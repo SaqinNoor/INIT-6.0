@@ -209,7 +209,7 @@ function animateCounter(el, target, duration = 2) {
 }
 
 
-function initGlobe() {
+function initGlobe(lenis) {
   const container = document.getElementById('globe-container');
   if (!container) return;
 
@@ -479,15 +479,22 @@ function initGlobe() {
   dom.addEventListener('mouseleave', () => { isDragging = false; });
 
   let lastTouch = null;
-  dom.addEventListener('touchstart', e => { lastTouch = e.touches[0]; });
+  dom.addEventListener('touchstart', e => { 
+    lastTouch = e.touches[0]; 
+    if (lenis) lenis.stop();
+  });
   dom.addEventListener('touchmove', e => {
+    if (e.cancelable) e.preventDefault();
     if (!lastTouch) return;
     const dx = e.touches[0].clientX - lastTouch.clientX;
     const dy = e.touches[0].clientY - lastTouch.clientY;
     velY = dx * 0.003; velX = dy * 0.003;
     rotX += velX; rotY += velY;
     lastTouch = e.touches[0];
-  });
+  }, { passive: false });
+
+  dom.addEventListener('touchend', () => { if (lenis) lenis.start(); });
+  dom.addEventListener('touchcancel', () => { if (lenis) lenis.start(); });
 
   let resizeTimer;
   function onResize() {
@@ -706,7 +713,7 @@ async function main() {
   initStars();
   initCreatures();
   const lenis = initLenis();
-  initGlobe();
+  initGlobe(lenis);
   ScrollTrigger.refresh();
   const introTl = initAnimations();
   await initLoader(() => {
