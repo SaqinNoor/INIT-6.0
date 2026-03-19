@@ -7,27 +7,9 @@ import * as THREE from 'three';
 gsap.registerPlugin(ScrollTrigger);
 
 // =============================================
-// NOISE CANVAS
 // =============================================
-(function initNoise() {
-  const canvas = document.getElementById('noise-canvas');
-  const ctx = canvas.getContext('2d');
-  let w, h;
-  function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
-  resize();
-  window.addEventListener('resize', resize);
-  function drawNoise() {
-    const idata = ctx.createImageData(w, h);
-    const buf = new Uint32Array(idata.data.buffer);
-    for (let i = 0; i < buf.length; i++) {
-      const v = Math.random() > 0.5 ? 255 : 0;
-      buf[i] = (255 << 24) | (v << 16) | (v << 8) | v;
-    }
-    ctx.putImageData(idata, 0, 0);
-    requestAnimationFrame(drawNoise);
-  }
-  drawNoise();
-})();
+// NOISE GENERATOR (REMOVED FOR PERFORMANCE)
+// =============================================
 
 // =============================================
 // LOADER
@@ -483,9 +465,7 @@ function initAnimations() {
   }
 
   // Fiber Optic Bundle Draw
-  // We draw the main fibers and casing via scroll length.
-  // The pulse-fiber is excluded so it acts like a tracer data line ahead of the bundle.
-  const fibers = document.querySelectorAll('#cable-casing, .fiber-line:not(.pulse-fiber)');
+  const fibers = document.querySelectorAll('#cable-casing, .fiber-line, .fiber-glow');
   fibers.forEach(path => {
     const len = path.getTotalLength() || 6500; 
     gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });

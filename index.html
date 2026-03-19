@@ -90,14 +90,6 @@
           <div class="cable-container">
             <svg id="cable-svg" viewBox="0 0 400 6000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
               <defs>
-                <filter id="glow-cyan" x="-20%" y="-20%" width="140%" height="140%">
-                  <feGaussianBlur stdDeviation="6" result="blur"/>
-                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-                </filter>
-                <filter id="glow-magenta" x="-20%" y="-20%" width="140%" height="140%">
-                  <feGaussianBlur stdDeviation="6" result="blur"/>
-                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-                </filter>
                 <linearGradient id="fiberGrad" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stop-color="#00ffe7"/>
                   <stop offset="25%" stop-color="#ff2cf6"/>
@@ -107,15 +99,18 @@
                 </linearGradient>
               </defs>
               
-              <!-- Core Casing (Thick dark background stroke) -->
+              <!-- Core Casing -->
               <path id="cable-casing" d="M 200 0 C 100 1000 300 1500 200 2500 C 100 3500 300 4500 200 5500 C 100 5800 200 6000 200 6000" fill="none" stroke="#050a18" stroke-width="24" stroke-linecap="round"/>
               
-              <!-- Glowing fibers inside the bundle -->
-              <path class="fiber-line" d="M 195 0 C 95 1000 295 1500 195 2500 C 95 3500 295 4500 195 5500 C 95 5800 195 6000 195 6000" fill="none" stroke="url(#fiberGrad)" stroke-width="4" filter="url(#glow-cyan)"/>
-              <path class="fiber-line" d="M 205 0 C 105 1000 305 1500 205 2500 C 105 3500 305 4500 205 5500 C 105 5800 205 6000 205 6000" fill="none" stroke="#ff2cf6" stroke-width="2.5" filter="url(#glow-magenta)"/>
+              <!-- Fake High-Performance Glow: Fiber 1 (Cyan/Gradient) -->
+              <path class="fiber-glow" d="M 195 0 C 95 1000 295 1500 195 2500 C 95 3500 295 4500 195 5500 C 95 5800 195 6000 195 6000" fill="none" stroke="url(#fiberGrad)" stroke-width="12" opacity="0.15"/>
+              <path class="fiber-glow" d="M 195 0 C 95 1000 295 1500 195 2500 C 95 3500 295 4500 195 5500 C 95 5800 195 6000 195 6000" fill="none" stroke="url(#fiberGrad)" stroke-width="6" opacity="0.3"/>
+              <path class="fiber-line" d="M 195 0 C 95 1000 295 1500 195 2500 C 95 3500 295 4500 195 5500 C 95 5800 195 6000 195 6000" fill="none" stroke="url(#fiberGrad)" stroke-width="2"/>
               
-              <!-- Animated dashed pulse inside bundle -->
-              <path class="fiber-line pulse-fiber" d="M 200 0 C 100 1000 300 1500 200 2500 C 100 3500 300 4500 200 5500 C 100 5800 200 6000 200 6000" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="20, 60" filter="url(#glow-cyan)"/>
+              <!-- Fake High-Performance Glow: Fiber 2 (Magenta) -->
+              <path class="fiber-glow" d="M 205 0 C 105 1000 305 1500 205 2500 C 105 3500 305 4500 205 5500 C 105 5800 205 6000 205 6000" fill="none" stroke="#ff2cf6" stroke-width="12" opacity="0.15"/>
+              <path class="fiber-glow" d="M 205 0 C 105 1000 305 1500 205 2500 C 105 3500 305 4500 205 5500 C 105 5800 205 6000 205 6000" fill="none" stroke="#ff2cf6" stroke-width="6" opacity="0.3"/>
+              <path class="fiber-line" d="M 205 0 C 105 1000 305 1500 205 2500 C 105 3500 305 4500 205 5500 C 105 5800 205 6000 205 6000" fill="none" stroke="#ff2cf6" stroke-width="2"/>
             </svg>
           </div>
 
