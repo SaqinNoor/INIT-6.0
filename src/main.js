@@ -655,7 +655,7 @@ function initAnimations() {
 
     ScrollTrigger.create({
       trigger: hs,
-      start: isMobile ? 'top 85%' : 'top 55%',
+      start: 'center center',
       end: isMobile ? 'bottom 5%' : 'bottom 10%',
       onEnter: () => tl.play(),
       onLeaveBack: () => tl.reverse(),
