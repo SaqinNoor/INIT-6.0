@@ -20,6 +20,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  cursor: none !important;
 }
 
 html {
@@ -1052,18 +1053,38 @@ body::before {
 }
 
 .legend-dot.cyan {
+  background: #00d4ff;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+.legend-dot.green {
   background: var(--cyan);
-  box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+  box-shadow: 0 0 10px rgba(153, 235, 30, 0.4);
 }
 
-.legend-dot.magenta {
-  background: var(--magenta);
-  box-shadow: 0 0 10px rgba(130, 87, 255, 0.3);
-}
-
-.legend-dot.orange {
+.legend-dot.gray {
   background: var(--orange);
-  box-shadow: 0 0 10px rgba(255, 184, 0, 0.3);
+  box-shadow: 0 0 6px rgba(126, 127, 154, 0.3);
+}
+
+.globe-source {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: #ffffff;
+  text-align: center;
+  margin-top: 1.5rem;
+  padding: 0 2rem;
+}
+
+.globe-source a {
+  color: var(--cyan);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.globe-source a:hover {
+  text-decoration: underline;
 }
 
 
@@ -1228,8 +1249,17 @@ body::before {
   font-family: var(--font-mono);
   font-size: 0.65rem;
   letter-spacing: 0.15em;
-  color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
   opacity: 0;
+}
+
+.outro-credit a {
+  color: var(--cyan);
+  text-decoration: none;
+}
+
+.outro-credit a:hover {
+  text-decoration: underline;
 }
 
 

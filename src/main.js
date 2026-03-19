@@ -224,14 +224,9 @@ function initGlobe() {
   const sphere = new THREE.Mesh(sphereGeo, sphereMat);
   scene.add(sphere);
 
-  const wireGeo = new THREE.SphereGeometry(1.002, 32, 32);
-  const wireMat = new THREE.MeshBasicMaterial({ color: 0x99eb1e, wireframe: true, transparent: true, opacity: 0.04 });
-  scene.add(new THREE.Mesh(wireGeo, wireMat));
-
   const atmGeo = new THREE.SphereGeometry(1.12, 64, 64);
   const atmMat = new THREE.MeshBasicMaterial({ color: 0x99eb1e, transparent: true, opacity: 0.06, side: THREE.BackSide });
   scene.add(new THREE.Mesh(atmGeo, atmMat));
-
 
   const ambient = new THREE.AmbientLight(0x020612, 1.8);
   scene.add(ambient);
@@ -242,8 +237,7 @@ function initGlobe() {
   dirLight2.position.set(-5, -2, -3);
   scene.add(dirLight2);
 
-
-  function latLngToVec3(lat, lng, r = 1.02) {
+  function latLngToVec3(lat, lng, r = 1.002) {
     const phi = (90 - lat) * Math.PI / 180;
     const theta = (lng + 180) * Math.PI / 180;
     return new THREE.Vector3(
@@ -253,20 +247,36 @@ function initGlobe() {
     );
   }
 
+  fetch('https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json')
+    .then(res => res.json())
+    .then(data => {
+      const geoMat = new THREE.LineBasicMaterial({ color: 0x7e7f9a, transparent: true, opacity: 0.5 });
+      data.features.forEach(feature => {
+        if (feature.geometry.type === 'Polygon') {
+          drawPoly(feature.geometry.coordinates[0], geoMat);
+        } else if (feature.geometry.type === 'MultiPolygon') {
+          feature.geometry.coordinates.forEach(poly => drawPoly(poly[0], geoMat));
+        }
+      });
+    }).catch(e => {});
+
+  function drawPoly(coords, material) {
+    const points = [];
+    coords.forEach(coord => {
+      points.push(latLngToVec3(coord[1], coord[0], 1.001));
+    });
+    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+    const line = new THREE.Line(geometry, material);
+    sphere.add(line);
+  }
+
   function createArc(startLat, startLng, endLat, endLng, color, segments = 60) {
     const start = latLngToVec3(startLat, startLng);
     const end = latLngToVec3(endLat, endLng);
-    const mid = start.clone().add(end).multiplyScalar(0.5);
-    const altitude = 1 + start.distanceTo(end) * 0.4;
-    mid.normalize().multiplyScalar(altitude);
-
     const points = [];
     for (let i = 0; i <= segments; i++) {
-      const t = i / segments;
-      const p = new THREE.Vector3()
-        .addScaledVector(start, (1 - t) * (1 - t))
-        .addScaledVector(mid, 2 * (1 - t) * t)
-        .addScaledVector(end, t * t);
+      const p = start.clone().lerp(end, i / segments);
+      p.normalize().multiplyScalar(1.002);
       points.push(p);
     }
     const geo = new THREE.BufferGeometry().setFromPoints(points);
@@ -283,58 +293,159 @@ function initGlobe() {
     return mesh;
   }
 
+  const GREEN = 0x99eb1e;
+  const CYAN = 0x00d4ff;
+  const GRAY = 0x7e7f9a;
+
   const cables = [
-    [40.7, -74.0, 51.5, -0.1, 0x99eb1e],
-    [38.7, -9.1, 25.8, -80.2, 0x99eb1e],
-    [51.5, -0.1, 38.7, -9.1, 0x99eb1e],
-    [40.7, -74.0, -23.5, -46.6, 0x99eb1e],
-    [37.8, -122.4, 35.7, 139.7, 0x333333],
-    [32.1, -117.1, 1.3, 103.8, 0x333333],
-    [35.7, 139.7, 22.3, 114.2, 0x333333],
-    [22.3, 114.2, 1.3, 103.8, 0x333333],
-    [37.8, -122.4, -33.9, 151.2, 0x333333],
-    [35.7, 139.7, -33.9, 151.2, 0x333333],
-    [51.5, -0.1, 25.2, 55.3, 0x99eb1e],
-    [25.2, 55.3, 1.3, 103.8, 0x99eb1e],
-    [13.1, 80.3, 1.3, 103.8, 0x99eb1e],
-    [19.1, 72.9, -33.9, 18.4, 0x7e7f9a],
-    [51.5, -0.1, -33.9, 18.4, 0x7e7f9a],
-    [-33.9, 18.4, -23.5, -46.6, 0x7e7f9a],
-    [-33.9, 151.2, 1.3, 103.8, 0x7e7f9a],
-    [-23.5, -46.6, 38.7, -9.1, 0x333333],
-    [1.3, 103.8, 13.1, 80.3, 0x333333],
-    [13.1, 80.3, 25.2, 55.3, 0x99eb1e],
+    [40.7, -74.0, 51.5, -0.1, CYAN],
+    [40.7, -74.0, 38.7, -9.1, CYAN],
+    [40.7, -74.0, 43.6, -70.2, GREEN],
+    [25.8, -80.2, 38.7, -9.1, GREEN],
+    [25.8, -80.2, 18.5, -72.3, GREEN],
+    [25.8, -80.2, 40.7, -74.0, GREEN],
+    [25.8, -80.2, 9.0, -79.5, GREEN],
+    [51.5, -0.1, 48.8, 2.3, CYAN],
+    [48.8, 2.3, 43.3, 5.3, GREEN],
+    [43.3, 5.3, 36.7, 3.1, GREEN],
+    [36.7, 3.1, 33.9, 10.2, GREEN],
+    [33.9, 10.2, 31.2, 29.9, GREEN],
+    [31.2, 29.9, 30.1, 31.3, GREEN],
+    [30.1, 31.3, 25.2, 55.3, CYAN],
+    [25.2, 55.3, 24.5, 51.5, GREEN],
+    [24.5, 51.5, 21.5, 39.2, GREEN],
+    [21.5, 39.2, 15.6, 32.5, GREEN],
+    [15.6, 32.5, 11.6, 43.1, GREEN],
+    [11.6, 43.1, 1.3, 45.3, GREEN],
+    [25.2, 55.3, 19.1, 72.9, CYAN],
+    [19.1, 72.9, 13.1, 80.3, GREEN],
+    [13.1, 80.3, 1.3, 103.8, CYAN],
+    [1.3, 103.8, 22.3, 114.2, CYAN],
+    [22.3, 114.2, 35.7, 139.7, CYAN],
+    [35.7, 139.7, 37.8, -122.4, CYAN],
+    [37.8, -122.4, 47.6, -122.3, GREEN],
+    [47.6, -122.3, 51.5, -0.1, GRAY],
+    [1.3, 103.8, -33.9, 151.2, GREEN],
+    [-33.9, 151.2, -36.8, 174.7, GREEN],
+    [-36.8, 174.7, 1.3, 103.8, GRAY],
+    [37.8, -122.4, 21.3, -157.8, GREEN],
+    [21.3, -157.8, -33.9, 151.2, GREEN],
+    [21.3, -157.8, 1.3, 103.8, GREEN],
+    [21.3, -157.8, 35.7, 139.7, GREEN],
+    [40.7, -74.0, -23.5, -46.6, GREEN],
+    [-23.5, -46.6, -34.6, -58.3, GREEN],
+    [-23.5, -46.6, -33.5, -70.6, GREEN],
+    [9.0, -79.5, -23.5, -46.6, GREEN],
+    [9.0, -79.5, 37.8, -122.4, GREEN],
+    [38.7, -9.1, 14.7, -17.4, GREEN],
+    [14.7, -17.4, -33.9, 18.4, GREEN],
+    [-33.9, 18.4, -23.5, -46.6, GREEN],
+    [-33.9, 18.4, -20.3, 57.5, GREEN],
+    [-20.3, 57.5, 1.3, 103.8, GREEN],
+    [-20.3, 57.5, 19.1, 72.9, GREEN],
+    [51.5, -0.1, 60.4, 5.3, GREEN],
+    [60.4, 5.3, 59.9, 30.3, GREEN],
+    [59.9, 30.3, 60.2, 24.9, GREEN],
+    [51.5, -0.1, 53.3, -6.3, GREEN],
+    [55.7, 37.6, 48.5, 34.2, GREEN],
+    [25.2, 55.3, 41.0, 28.9, GREEN],
+    [14.7, -17.4, 4.4, 9.7, GREEN],
+    [4.4, 9.7, -4.3, 15.3, GREEN],
+    [-4.3, 15.3, -33.9, 18.4, GREEN],
+    [1.3, 103.8, 15.9, 108.2, GREEN],
+    [15.9, 108.2, 22.3, 114.2, GREEN],
+    [35.7, 139.7, -33.9, 151.2, GREEN],
+    [22.3, 114.2, 10.8, 106.7, GREEN],
+    [10.8, 106.7, 3.1, 101.7, GREEN],
+    [3.1, 101.7, 1.3, 103.8, GREEN],
+    [13.1, 80.3, 6.9, 79.9, GREEN],
+    [6.9, 79.9, -20.3, 57.5, GREEN],
+    [41.0, 28.9, 37.0, 22.0, GREEN],
+    [37.0, 22.0, 33.9, 10.2, GREEN],
+    [48.8, 2.3, 51.5, -0.1, GREEN],
+    [-23.5, -46.6, 10.5, -66.9, GREEN],
+    [10.5, -66.9, 18.5, -72.3, GREEN],
+    [18.5, -72.3, 25.8, -80.2, GREEN],
+    [38.7, -9.1, 27.7, -15.4, GREEN],
+    [27.7, -15.4, 14.7, -17.4, GREEN],
+    [27.7, -15.4, 25.8, -80.2, GRAY],
+    [47.6, -122.3, 21.3, -157.8, GREEN],
+    [51.5, -0.1, 40.7, -74.0, CYAN],
+    [13.1, 80.3, 22.3, 114.2, GRAY],
+    [-33.5, -70.6, -33.9, 18.4, GRAY],
+    [59.9, 30.3, 35.7, 139.7, GRAY],
+    [60.4, 5.3, 21.3, -157.8, GRAY]
   ];
 
   const cities = [
-    [40.7, -74.0, 0x99eb1e, 'New York'], [51.5, -0.1, 0x99eb1e, 'London'],
-    [38.7, -9.1, 0x99eb1e, 'Lisbon'], [25.8, -80.2, 0x99eb1e, 'Miami'],
-    [37.8, -122.4, 0x333333, 'San Francisco'], [35.7, 139.7, 0x333333, 'Tokyo'],
-    [22.3, 114.2, 0x333333, 'Hong Kong'], [1.3, 103.8, 0x333333, 'Singapore'],
-    [-33.9, 151.2, 0x7e7f9a, 'Sydney'], [-33.9, 18.4, 0x7e7f9a, 'Cape Town'],
-    [-23.5, -46.6, 0x7e7f9a, 'São Paulo'], [25.2, 55.3, 0x99eb1e, 'Dubai'],
-    [13.1, 80.3, 0x99eb1e, 'Chennai'], [19.1, 72.9, 0x7e7f9a, 'Mumbai'],
+    [40.7, -74.0, CYAN],
+    [51.5, -0.1, CYAN],
+    [38.7, -9.1, GREEN],
+    [25.8, -80.2, GREEN],
+    [37.8, -122.4, CYAN],
+    [47.6, -122.3, GREEN],
+    [35.7, 139.7, CYAN],
+    [22.3, 114.2, CYAN],
+    [1.3, 103.8, CYAN],
+    [10.8, 106.7, GREEN],
+    [3.1, 101.7, GREEN],
+    [15.9, 108.2, GREEN],
+    [-33.9, 151.2, GREEN],
+    [-36.8, 174.7, GREEN],
+    [-33.9, 18.4, GREEN],
+    [-23.5, -46.6, GREEN],
+    [-34.6, -58.3, GREEN],
+    [-33.5, -70.6, GREEN],
+    [25.2, 55.3, CYAN],
+    [24.5, 51.5, GREEN],
+    [21.5, 39.2, GREEN],
+    [13.1, 80.3, GREEN],
+    [19.1, 72.9, CYAN],
+    [6.9, 79.9, GREEN],
+    [48.8, 2.3, GREEN],
+    [43.3, 5.3, GREEN],
+    [36.7, 3.1, GREEN],
+    [33.9, 10.2, GREEN],
+    [31.2, 29.9, GREEN],
+    [30.1, 31.3, GREEN],
+    [41.0, 28.9, GREEN],
+    [21.3, -157.8, GREEN],
+    [14.7, -17.4, GREEN],
+    [27.7, -15.4, GREEN],
+    [-20.3, 57.5, GREEN],
+    [4.4, 9.7, GREEN],
+    [-4.3, 15.3, GREEN],
+    [11.6, 43.1, GREEN],
+    [1.3, 45.3, GREEN],
+    [15.6, 32.5, GREEN],
+    [60.4, 5.3, GREEN],
+    [59.9, 30.3, GREEN],
+    [60.2, 24.9, GREEN],
+    [53.3, -6.3, GREEN],
+    [9.0, -79.5, GREEN],
+    [18.5, -72.3, GREEN],
+    [10.5, -66.9, GREEN],
+    [43.6, -70.2, GREEN],
+    [37.0, 22.0, GREEN]
   ];
 
   cables.forEach(([sLat, sLng, eLat, eLng, col]) => {
     const arc = createArc(sLat, sLng, eLat, eLng, col);
-    scene.add(arc);
-  });
-
-  cities.forEach(([lat, lng, col]) => {
-    scene.add(createPoint(lat, lng, col));
+    sphere.add(arc);
   });
 
   const pulseRings = [];
   cities.forEach(([lat, lng, col]) => {
+    const pt = createPoint(lat, lng, col);
+    sphere.add(pt);
     const pos = latLngToVec3(lat, lng, 1.03);
     const geo = new THREE.RingGeometry(0.012, 0.025, 16);
     const mat = new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.8, side: THREE.DoubleSide });
     const ring = new THREE.Mesh(geo, mat);
     ring.position.copy(pos);
     ring.lookAt(new THREE.Vector3(0, 0, 0));
-    ring.userData = { baseScale: 1, phase: Math.random() * Math.PI * 2 };
-    scene.add(ring);
+    ring.userData = { phase: Math.random() * Math.PI * 2 };
+    sphere.add(ring);
     pulseRings.push(ring);
   });
 
@@ -371,12 +482,11 @@ function initGlobe() {
   }
   window.addEventListener('resize', onResize);
 
-  let globeVisible = false;
   ScrollTrigger.create({
     trigger: '#globe-section',
     start: 'top 80%',
     once: true,
-    onEnter: () => { globeVisible = true; dom.style.opacity = '0'; dom.style.transition = 'opacity 1s ease'; setTimeout(() => dom.style.opacity = '1', 100); }
+    onEnter: () => { dom.style.opacity = '0'; dom.style.transition = 'opacity 1s ease'; setTimeout(() => dom.style.opacity = '1', 100); }
   });
 
   const clock = new THREE.Clock();
@@ -391,15 +501,8 @@ function initGlobe() {
     rotX += (velX - rotX) * 0;
     sphere.rotation.x = rotX;
     sphere.rotation.y += velY + (isDragging ? 0 : 0.0015);
-    scene.children.forEach(c => {
-      if (c !== sphere && c.type !== 'AmbientLight' && c.type !== 'DirectionalLight') {
-        c.rotation.x = sphere.rotation.x;
-        c.rotation.y = sphere.rotation.y;
-      }
-    });
 
-
-    pulseRings.forEach((ring, i) => {
+    pulseRings.forEach(ring => {
       const phase = ring.userData.phase;
       const s = 1 + 0.4 * Math.abs(Math.sin(t * 1.5 + phase));
       ring.scale.setScalar(s);
