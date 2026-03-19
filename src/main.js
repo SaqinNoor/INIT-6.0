@@ -6,6 +6,8 @@ import * as THREE from 'three';
 
 gsap.registerPlugin(ScrollTrigger);
 
+
+
 function initLoader(onHandoff) {
   return new Promise(resolve => {
     const counter = { val: 0 };
@@ -90,7 +92,13 @@ function initCursor() {
 
 
 function initLenis() {
-  const lenis = new Lenis({ lerp: 0.08, smooth: true });
+  const lenis = new Lenis({ 
+    lerp: 0.1, 
+    smoothWheel: true,
+    smoothTouch: true,
+    touchMultiplier: 1.5,
+    syncTouch: true
+  });
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add((time) => lenis.raf(time * 1000));
   gsap.ticker.lagSmoothing(0);
@@ -210,7 +218,7 @@ function initGlobe() {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 1000);
-  camera.position.z = 2.8;
+  camera.position.z = (window.innerWidth <= 768) ? 3.5 : 2.8;
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setSize(W, H);
@@ -487,6 +495,7 @@ function initGlobe() {
     resizeTimer = setTimeout(() => {
       const nW = container.clientWidth, nH = container.clientHeight;
       camera.aspect = nW / nH; camera.updateProjectionMatrix();
+      camera.position.z = (window.innerWidth <= 768) ? 3.5 : 2.8;
       renderer.setSize(nW, nH);
     }, 100);
   }
@@ -625,33 +634,33 @@ function initAnimations() {
     const content = card.querySelectorAll(':scope > *');
     const pulse = hs.querySelector('.hotspot-pulse');
     const isLeft = hs.classList.contains('left-aligned');
+    const isMobile = window.innerWidth <= 768;
+    const clipStart = 'polygon(0% 10%, 0% 10%, 0% 10%, 0% 10%, 0% 10%, 0% 10%)';
+    const clipEnd = 'polygon(0% 2%, 2% 0%, 100% 0%, 100% 98%, 98% 100%, 0% 100%)';
+    const lineWidth = isMobile ? 25 : 80;
+    
     gsap.set(hs, { opacity: 1 });
     gsap.set(pulse, { scale: 0, opacity: 0 });
     gsap.set(line, { width: 0 });
-    const clipStart = isLeft 
-      ? 'polygon(100% 50%, 100% 50%, 100% 50%, 100% 50%, 100% 50%, 100% 50%)' 
-      : 'polygon(0% 50%, 0% 50%, 0% 50%, 0% 50%, 0% 50%, 0% 50%)';
-    const clipEnd = 'polygon(0% 5%, 5% 0%, 100% 0%, 100% 95%, 95% 100%, 0% 100%)';
-    
     gsap.set(card, { autoAlpha: 0, clipPath: clipStart });
     gsap.set(content, { autoAlpha: 0, y: 15 });
 
     const tl = gsap.timeline({ paused: true });
 
     tl.to(pulse, { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(2)' })
-      .to(line, { width: 80, duration: 0.4, ease: 'expo.inOut' }, '-=0.1')
+      .to(line, { width: lineWidth, duration: 0.4, ease: 'expo.inOut' }, '-=0.1')
       .to(card, { autoAlpha: 1, duration: 0.05 }, '-=0.1')
       .to(card, { clipPath: clipEnd, duration: 0.5, ease: 'power4.out' }, '<')
       .to(content, { autoAlpha: 1, y: 0, duration: 0.4, stagger: 0.05, ease: 'power2.out' }, '-=0.3');
 
     ScrollTrigger.create({
       trigger: hs,
-      start: 'top 55%',
-      end: 'bottom 10%',
+      start: isMobile ? 'top 85%' : 'top 55%',
+      end: isMobile ? 'bottom 5%' : 'bottom 10%',
       onEnter: () => tl.play(),
       onLeaveBack: () => tl.reverse(),
-      onLeave: () => gsap.to(hs, { opacity: 0, y: -30, duration: 0.5 }),
-      onEnterBack: () => gsap.to(hs, { opacity: 1, y: 0, duration: 0.5, onComplete: () => tl.play() })
+      onLeave: () => { if (!isMobile) gsap.to(hs, { opacity: 0, y: -30, duration: 0.5 }); },
+      onEnterBack: () => { if (!isMobile) gsap.to(hs, { opacity: 1, y: 0, duration: 0.5, onComplete: () => tl.play() }); }
     });
   });
 
