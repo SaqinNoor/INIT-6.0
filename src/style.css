@@ -639,6 +639,8 @@ body::before {
   background: var(--cyan);
   border-radius: 50%;
   opacity: 0.3;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 
@@ -684,6 +686,16 @@ body::before {
   pointer-events: none;
   z-index: 3;
   opacity: 0;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+.creature-canvas {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .cable-hotspots {
@@ -1160,9 +1172,7 @@ body::before {
   top: 0;
   left: 0;
   color: var(--cyan);
-  animation: outro-glitch 6s 2s infinite;
-  clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%);
-  opacity: 0.4;
+  animation: hero-glitch-clip-1 2.5s infinite linear;
 }
 
 .outro-glitch::after {
@@ -1171,50 +1181,7 @@ body::before {
   top: 0;
   left: 0;
   color: var(--magenta);
-  animation: outro-glitch 6s 2.15s infinite;
-  clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
-  opacity: 0.4;
-}
-
-@keyframes outro-glitch {
-
-  0%,
-  92%,
-  100% {
-    transform: translate(0);
-    opacity: 0;
-  }
-
-  93% {
-    transform: translate(-4px, 2px);
-    opacity: 0.8;
-  }
-
-  94% {
-    transform: translate(4px, -2px);
-    opacity: 0.9;
-  }
-
-  95% {
-    transform: translate(-2px, -1px);
-    opacity: 0.7;
-  }
-
-  96%,
-  97% {
-    transform: translate(0);
-    opacity: 1;
-  }
-
-  98% {
-    transform: translate(3px, 1px);
-    opacity: 0.8;
-  }
-
-  99% {
-    transform: translate(-3px, -1px);
-    opacity: 0.6;
-  }
+  animation: hero-glitch-clip-2 2.6s infinite linear;
 }
 
 .outro-title {

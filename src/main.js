@@ -481,10 +481,14 @@ function initGlobe() {
     lastTouch = e.touches[0];
   });
 
+  let resizeTimer;
   function onResize() {
-    const nW = container.clientWidth, nH = container.clientHeight;
-    camera.aspect = nW / nH; camera.updateProjectionMatrix();
-    renderer.setSize(nW, nH);
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      const nW = container.clientWidth, nH = container.clientHeight;
+      camera.aspect = nW / nH; camera.updateProjectionMatrix();
+      renderer.setSize(nW, nH);
+    }, 100);
   }
   window.addEventListener('resize', onResize);
 
@@ -495,9 +499,16 @@ function initGlobe() {
     onEnter: () => { dom.style.opacity = '0'; dom.style.transition = 'opacity 1s ease'; setTimeout(() => dom.style.opacity = '1', 100); }
   });
 
+  let globeVisible = false;
+  const observer = new IntersectionObserver(entries => {
+    globeVisible = entries[0].isIntersecting;
+  }, { threshold: 0 });
+  observer.observe(document.getElementById('globe-section'));
+
   const clock = new THREE.Clock();
   function animate() {
     requestAnimationFrame(animate);
+    if (!globeVisible) return;
     const t = clock.getElapsedTime();
 
     if (!isDragging) {
