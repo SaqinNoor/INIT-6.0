@@ -6,14 +6,7 @@ import * as THREE from 'three';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// =============================================
-// =============================================
-// NOISE GENERATOR (REMOVED FOR PERFORMANCE)
-// =============================================
-
-// =============================================
-// LOADER
-// =============================================
+// Loader
 function initLoader() {
   return new Promise(resolve => {
     const bar = document.querySelector('.loader-bar');
@@ -26,7 +19,7 @@ function initLoader() {
         progress = 100;
         clearInterval(interval);
         setTimeout(() => {
-          gsap.to(loader, { opacity: 0, duration: 0.6, ease: 'power2.in', onComplete: () => { loader.style.display = 'none'; resolve(); }});
+          gsap.to(loader, { opacity: 0, duration: 0.6, ease: 'power2.in', onComplete: () => { loader.style.display = 'none'; resolve(); } });
         }, 400);
       }
       bar.style.width = progress + '%';
@@ -35,9 +28,7 @@ function initLoader() {
   });
 }
 
-// =============================================
-// CUSTOM CURSOR
-// =============================================
+// Custom Cursor
 function initCursor() {
   const cursor = document.getElementById('cursor');
   const dot = document.getElementById('cursor-dot');
@@ -55,9 +46,7 @@ function initCursor() {
   });
 }
 
-// =============================================
-// LENIS SMOOTH SCROLL
-// =============================================
+// Smooth Scroll (Lenis)
 function initLenis() {
   const lenis = new Lenis({ lerp: 0.08, smooth: true });
   lenis.on('scroll', ScrollTrigger.update);
@@ -66,45 +55,27 @@ function initLenis() {
   return lenis;
 }
 
-// =============================================
-// STAR FIELD
-// =============================================
+// Stars
 function initStars() {
   const field = document.getElementById('star-field');
   for (let i = 0; i < 200; i++) {
     const s = document.createElement('div');
     s.className = 'star';
     const sz = Math.random() * 2.5 + 0.5;
-    s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--dur:${2+Math.random()*4}s;--del:${-Math.random()*5}s;opacity:${0.2+Math.random()*0.8}`;
+    s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random() * 100}%;left:${Math.random() * 100}%;--dur:${2 + Math.random() * 4}s;--del:${-Math.random() * 5}s;opacity:${0.2 + Math.random() * 0.8}`;
     field.appendChild(s);
   }
 }
 
-// =============================================
-// WIREFRAME CREATURES
-// =============================================
+// Wireframe Creatures
 function drawWireframeFish(canvasId, color) {
   const canvas = document.getElementById(canvasId);
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   const W = canvas.width, H = canvas.height;
   ctx.strokeStyle = color; ctx.lineWidth = 1; ctx.globalAlpha = 0.7;
-  const cx = W*0.42, cy = H*0.5, rx = W*0.3, ry = H*0.25;
-  // body
-  const pts = [];
-  for (let i = 0; i <= 16; i++) {
-    const a = (i/16)*Math.PI*2;
-    pts.push({x: cx+Math.cos(a)*rx, y: cy+Math.sin(a)*ry});
-  }
-  ctx.beginPath(); pts.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y)); ctx.closePath(); ctx.stroke();
-  // cross-hatch
-  for (let i=0;i<pts.length-1;i+=3){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(cx,cy);ctx.stroke();}
-  // tail
-  ctx.beginPath(); ctx.moveTo(cx+rx,cy); ctx.lineTo(W*0.97,cy-H*0.22); ctx.lineTo(W*0.97,cy+H*0.22); ctx.closePath(); ctx.stroke();
-  // fin
-  ctx.beginPath(); ctx.moveTo(cx,cy-ry); ctx.lineTo(cx+rx*0.3,cy-ry*1.5); ctx.lineTo(cx+rx*0.6,cy-ry*0.6); ctx.closePath(); ctx.stroke();
-  // eye
-  ctx.beginPath(); ctx.arc(cx-rx*0.55,cy-ry*0.1,4,0,Math.PI*2); ctx.stroke();
+  const cx = W * 0.42, cy = H * 0.5, rx = W * 0.3, ry = H * 0.25;
+  ctx.beginPath(); ctx.arc(cx - rx * 0.55, cy - ry * 0.1, 4, 0, Math.PI * 2); ctx.stroke();
 }
 
 function drawWireframeJellyfish(canvasId, color) {
@@ -113,15 +84,15 @@ function drawWireframeJellyfish(canvasId, color) {
   const ctx = canvas.getContext('2d');
   const W = canvas.width, H = canvas.height;
   ctx.strokeStyle = color; ctx.lineWidth = 1; ctx.globalAlpha = 0.65;
-  const cx = W/2, cy = H*0.28, rx = W*0.38, ry = H*0.26;
+  const cx = W / 2, cy = H * 0.28, rx = W * 0.38, ry = H * 0.26;
   ctx.beginPath();
-  for (let i=0;i<=20;i++){const a=(i/20)*Math.PI; ctx.lineTo(cx+Math.cos(a)*rx, cy-Math.sin(a)*ry);}
+  for (let i = 0; i <= 20; i++) { const a = (i / 20) * Math.PI; ctx.lineTo(cx + Math.cos(a) * rx, cy - Math.sin(a) * ry); }
   ctx.stroke();
-  for(let i=1;i<6;i++){ctx.beginPath();ctx.moveTo(cx-rx+(i*rx*2/6),cy);ctx.bezierCurveTo(cx,cy-ry*0.5,cx,cy-ry*0.8,cx,cy-ry);ctx.stroke();}
-  for(let i=0;i<8;i++){
-    const tx=cx-rx*0.78+(i*rx*1.56/7), tl=H*(0.3+Math.random()*0.35);
-    ctx.beginPath(); ctx.moveTo(tx,cy);
-    ctx.bezierCurveTo(tx+(Math.random()-0.5)*18,cy+tl*0.35,tx+(Math.random()-0.5)*24,cy+tl*0.7,tx+(Math.random()-0.5)*14,cy+tl);
+  for (let i = 1; i < 6; i++) { ctx.beginPath(); ctx.moveTo(cx - rx + (i * rx * 2 / 6), cy); ctx.bezierCurveTo(cx, cy - ry * 0.5, cx, cy - ry * 0.8, cx, cy - ry); ctx.stroke(); }
+  for (let i = 0; i < 8; i++) {
+    const tx = cx - rx * 0.78 + (i * rx * 1.56 / 7), tl = H * (0.3 + Math.random() * 0.35);
+    ctx.beginPath(); ctx.moveTo(tx, cy);
+    ctx.bezierCurveTo(tx + (Math.random() - 0.5) * 18, cy + tl * 0.35, tx + (Math.random() - 0.5) * 24, cy + tl * 0.7, tx + (Math.random() - 0.5) * 14, cy + tl);
     ctx.stroke();
   }
 }
@@ -132,16 +103,16 @@ function drawWireframeAnglerfish(canvasId, color) {
   const ctx = canvas.getContext('2d');
   const W = canvas.width, H = canvas.height;
   ctx.strokeStyle = color; ctx.lineWidth = 1; ctx.globalAlpha = 0.6;
-  const cx=W*0.45, cy=H*0.52, rx=W*0.33, ry=H*0.3;
-  const pts=[];
-  for(let i=0;i<18;i++){const a=(i/18)*Math.PI*2, w=1+0.15*Math.sin(a*3+1.5); pts.push({x:cx+Math.cos(a)*rx*w,y:cy+Math.sin(a)*ry*w});}
-  ctx.beginPath(); pts.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y)); ctx.closePath(); ctx.stroke();
-  for(let i=0;i<18;i+=3){ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(pts[i].x,pts[i].y);ctx.stroke();}
-  ctx.beginPath();ctx.moveTo(cx-rx*0.2,cy-ry);ctx.bezierCurveTo(cx,cy-ry*1.8,cx+rx*0.6,cy-ry*1.4,cx+rx*0.5,cy-ry*0.7);ctx.stroke();
-  ctx.globalAlpha=0.9; ctx.fillStyle=color; ctx.beginPath(); ctx.arc(cx+rx*0.5,cy-ry*0.7,6,0,Math.PI*2); ctx.fill(); ctx.globalAlpha=0.6;
+  const cx = W * 0.45, cy = H * 0.52, rx = W * 0.33, ry = H * 0.3;
+  const pts = [];
+  for (let i = 0; i < 18; i++) { const a = (i / 18) * Math.PI * 2, w = 1 + 0.15 * Math.sin(a * 3 + 1.5); pts.push({ x: cx + Math.cos(a) * rx * w, y: cy + Math.sin(a) * ry * w }); }
+  ctx.beginPath(); pts.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y)); ctx.closePath(); ctx.stroke();
+  for (let i = 0; i < 18; i += 3) { ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(pts[i].x, pts[i].y); ctx.stroke(); }
+  ctx.beginPath(); ctx.moveTo(cx - rx * 0.2, cy - ry); ctx.bezierCurveTo(cx, cy - ry * 1.8, cx + rx * 0.6, cy - ry * 1.4, cx + rx * 0.5, cy - ry * 0.7); ctx.stroke();
+  ctx.globalAlpha = 0.9; ctx.fillStyle = color; ctx.beginPath(); ctx.arc(cx + rx * 0.5, cy - ry * 0.7, 6, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 0.6;
   // teeth
-  ctx.beginPath(); ctx.moveTo(cx-rx,cy+ry*0.1); ctx.lineTo(cx-rx*1.15,cy-ry*0.2);
-  for(let t=0;t<=7;t++){const ty=cy-ry*0.2+(t*ry*0.45/7); ctx.lineTo(cx-rx*1.15+(t%2===0?6:18),ty);}
+  ctx.beginPath(); ctx.moveTo(cx - rx, cy + ry * 0.1); ctx.lineTo(cx - rx * 1.15, cy - ry * 0.2);
+  for (let t = 0; t <= 7; t++) { const ty = cy - ry * 0.2 + (t * ry * 0.45 / 7); ctx.lineTo(cx - rx * 1.15 + (t % 2 === 0 ? 6 : 18), ty); }
   ctx.stroke();
 }
 
@@ -152,17 +123,13 @@ function initCreatures() {
   drawWireframeAnglerfish('anglerfish-1', '#00ffe7');
 }
 
-// =============================================
-// COUNTER ANIMATION
-// =============================================
-function animateCounter(el, target, duration=2) {
-  const obj={val:0};
-  gsap.to(obj,{val:target,duration,ease:'power2.out',onUpdate:()=>{el.textContent=Math.floor(obj.val).toLocaleString();}});
+// Counters
+function animateCounter(el, target, duration = 2) {
+  const obj = { val: 0 };
+  gsap.to(obj, { val: target, duration, ease: 'power2.out', onUpdate: () => { el.textContent = Math.floor(obj.val).toLocaleString(); } });
 }
 
-// =============================================
-// THREE.JS GLOBE
-// =============================================
+// Three.js Globe
 function initGlobe() {
   const container = document.getElementById('globe-container');
   if (!container) return;
@@ -171,7 +138,7 @@ function initGlobe() {
   const H = container.clientHeight || 600;
 
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(45, W/H, 0.1, 1000);
+  const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 1000);
   camera.position.z = 2.8;
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -180,7 +147,6 @@ function initGlobe() {
   renderer.setClearColor(0x000000, 0);
   container.appendChild(renderer.domElement);
 
-  // Globe sphere
   const sphereGeo = new THREE.SphereGeometry(1, 64, 64);
   const sphereMat = new THREE.MeshPhongMaterial({
     color: 0x020c1a,
@@ -193,24 +159,12 @@ function initGlobe() {
   const sphere = new THREE.Mesh(sphereGeo, sphereMat);
   scene.add(sphere);
 
-  // Wireframe overlay
   const wireGeo = new THREE.SphereGeometry(1.002, 32, 32);
-  const wireMat = new THREE.MeshBasicMaterial({
-    color: 0x00ffe7,
-    wireframe: true,
-    transparent: true,
-    opacity: 0.04
-  });
+  const wireMat = new THREE.MeshBasicMaterial({ color: 0x00ffe7, wireframe: true, transparent: true, opacity: 0.04 });
   scene.add(new THREE.Mesh(wireGeo, wireMat));
 
-  // Atmosphere glow
   const atmGeo = new THREE.SphereGeometry(1.12, 64, 64);
-  const atmMat = new THREE.MeshBasicMaterial({
-    color: 0x00ffe7,
-    transparent: true,
-    opacity: 0.06,
-    side: THREE.BackSide
-  });
+  const atmMat = new THREE.MeshBasicMaterial({ color: 0x00ffe7, transparent: true, opacity: 0.06, side: THREE.BackSide });
   scene.add(new THREE.Mesh(atmGeo, atmMat));
 
   // Lights
@@ -224,17 +178,17 @@ function initGlobe() {
   scene.add(dirLight2);
 
   // Geo helpers
-  function latLngToVec3(lat, lng, r=1.02) {
+  function latLngToVec3(lat, lng, r = 1.02) {
     const phi = (90 - lat) * Math.PI / 180;
     const theta = (lng + 180) * Math.PI / 180;
     return new THREE.Vector3(
       -r * Math.sin(phi) * Math.cos(theta),
-       r * Math.cos(phi),
-       r * Math.sin(phi) * Math.sin(theta)
+      r * Math.cos(phi),
+      r * Math.sin(phi) * Math.sin(theta)
     );
   }
 
-  function createArc(startLat, startLng, endLat, endLng, color, segments=60) {
+  function createArc(startLat, startLng, endLat, endLng, color, segments = 60) {
     const start = latLngToVec3(startLat, startLng);
     const end = latLngToVec3(endLat, endLng);
     const mid = start.clone().add(end).multiplyScalar(0.5);
@@ -242,13 +196,13 @@ function initGlobe() {
     mid.normalize().multiplyScalar(altitude);
 
     const points = [];
-    for (let i=0; i<=segments; i++) {
-      const t = i/segments;
+    for (let i = 0; i <= segments; i++) {
+      const t = i / segments;
       // Quadratic bezier
       const p = new THREE.Vector3()
-        .addScaledVector(start, (1-t)*(1-t))
-        .addScaledVector(mid, 2*(1-t)*t)
-        .addScaledVector(end, t*t);
+        .addScaledVector(start, (1 - t) * (1 - t))
+        .addScaledVector(mid, 2 * (1 - t) * t)
+        .addScaledVector(end, t * t);
       points.push(p);
     }
     const geo = new THREE.BufferGeometry().setFromPoints(points);
@@ -267,65 +221,60 @@ function initGlobe() {
 
   // Cable data — real routes
   const cables = [
-    // Trans-Atlantic (cyan)
-    [40.7,-74.0, 51.5,-0.1, 0x00ffe7],
-    [38.7,-9.1, 25.8,-80.2, 0x00ffe7],
-    [51.5,-0.1, 38.7,-9.1, 0x00ffe7],
-    [40.7,-74.0, -23.5,-46.6, 0x00ffe7],
-    // Trans-Pacific (magenta)
-    [37.8,-122.4, 35.7,139.7, 0xff2cf6],
-    [32.1,-117.1, 1.3,103.8, 0xff2cf6],
-    [35.7,139.7, 22.3,114.2, 0xff2cf6],
-    [22.3,114.2, 1.3,103.8, 0xff2cf6],
-    [37.8,-122.4, -33.9,151.2, 0xff2cf6],
-    [35.7,139.7, -33.9,151.2, 0xff2cf6],
-    // Indian Ocean / Middle East (cyan)
-    [51.5,-0.1, 25.2,55.3, 0x00ffe7],
-    [25.2,55.3, 1.3,103.8, 0x00ffe7],
-    [13.1,80.3, 1.3,103.8, 0x00ffe7],
-    // Africa / South (orange)
-    [19.1,72.9, -33.9,18.4, 0xff6b00],
-    [51.5,-0.1, -33.9,18.4, 0xff6b00],
-    [-33.9,18.4, -23.5,-46.6, 0xff6b00],
-    [-33.9,151.2, 1.3,103.8, 0xff6b00],
-    // Extra
-    [-23.5,-46.6, 38.7,-9.1, 0xff2cf6],
-    [1.3,103.8, 13.1,80.3, 0xff2cf6],
-    [13.1,80.3, 25.2,55.3, 0x00ffe7],
+    [40.7, -74.0, 51.5, -0.1, 0x00ffe7],
+    [38.7, -9.1, 25.8, -80.2, 0x00ffe7],
+    [51.5, -0.1, 38.7, -9.1, 0x00ffe7],
+    [40.7, -74.0, -23.5, -46.6, 0x00ffe7],
+    [37.8, -122.4, 35.7, 139.7, 0xff2cf6],
+    [32.1, -117.1, 1.3, 103.8, 0xff2cf6],
+    [35.7, 139.7, 22.3, 114.2, 0xff2cf6],
+    [22.3, 114.2, 1.3, 103.8, 0xff2cf6],
+    [37.8, -122.4, -33.9, 151.2, 0xff2cf6],
+    [35.7, 139.7, -33.9, 151.2, 0xff2cf6],
+    [51.5, -0.1, 25.2, 55.3, 0x00ffe7],
+    [25.2, 55.3, 1.3, 103.8, 0x00ffe7],
+    [13.1, 80.3, 1.3, 103.8, 0x00ffe7],
+    [19.1, 72.9, -33.9, 18.4, 0xff6b00],
+    [51.5, -0.1, -33.9, 18.4, 0xff6b00],
+    [-33.9, 18.4, -23.5, -46.6, 0xff6b00],
+    [-33.9, 151.2, 1.3, 103.8, 0xff6b00],
+    [-23.5, -46.6, 38.7, -9.1, 0xff2cf6],
+    [1.3, 103.8, 13.1, 80.3, 0xff2cf6],
+    [13.1, 80.3, 25.2, 55.3, 0x00ffe7],
   ];
 
   // Landing point cities
   const cities = [
-    [40.7,-74.0, 0x00ffe7,  'New York'], [51.5,-0.1, 0x00ffe7, 'London'],
-    [38.7,-9.1, 0x00ffe7, 'Lisbon'], [25.8,-80.2, 0x00ffe7, 'Miami'],
-    [37.8,-122.4, 0xff2cf6, 'San Francisco'], [35.7,139.7, 0xff2cf6, 'Tokyo'],
-    [22.3,114.2, 0xff2cf6, 'Hong Kong'], [1.3,103.8, 0xff2cf6, 'Singapore'],
-    [-33.9,151.2, 0xff6b00, 'Sydney'], [-33.9,18.4, 0xff6b00, 'Cape Town'],
-    [-23.5,-46.6, 0xff6b00, 'São Paulo'], [25.2,55.3, 0x00ffe7, 'Dubai'],
-    [13.1,80.3, 0x00ffe7, 'Chennai'], [19.1,72.9, 0xff6b00, 'Mumbai'],
+    [40.7, -74.0, 0x00ffe7, 'New York'], [51.5, -0.1, 0x00ffe7, 'London'],
+    [38.7, -9.1, 0x00ffe7, 'Lisbon'], [25.8, -80.2, 0x00ffe7, 'Miami'],
+    [37.8, -122.4, 0xff2cf6, 'San Francisco'], [35.7, 139.7, 0xff2cf6, 'Tokyo'],
+    [22.3, 114.2, 0xff2cf6, 'Hong Kong'], [1.3, 103.8, 0xff2cf6, 'Singapore'],
+    [-33.9, 151.2, 0xff6b00, 'Sydney'], [-33.9, 18.4, 0xff6b00, 'Cape Town'],
+    [-23.5, -46.6, 0xff6b00, 'São Paulo'], [25.2, 55.3, 0x00ffe7, 'Dubai'],
+    [13.1, 80.3, 0x00ffe7, 'Chennai'], [19.1, 72.9, 0xff6b00, 'Mumbai'],
   ];
 
   // Add arcs
-  cables.forEach(([sLat,sLng, eLat,eLng, col]) => {
-    const arc = createArc(sLat,sLng, eLat,eLng, col);
+  cables.forEach(([sLat, sLng, eLat, eLng, col]) => {
+    const arc = createArc(sLat, sLng, eLat, eLng, col);
     scene.add(arc);
   });
 
   // Add city dots
-  cities.forEach(([lat,lng,col]) => {
+  cities.forEach(([lat, lng, col]) => {
     scene.add(createPoint(lat, lng, col));
   });
 
   // Pulse rings on cities
   const pulseRings = [];
-  cities.forEach(([lat,lng,col]) => {
+  cities.forEach(([lat, lng, col]) => {
     const pos = latLngToVec3(lat, lng, 1.03);
     const geo = new THREE.RingGeometry(0.012, 0.025, 16);
     const mat = new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.8, side: THREE.DoubleSide });
     const ring = new THREE.Mesh(geo, mat);
     ring.position.copy(pos);
-    ring.lookAt(new THREE.Vector3(0,0,0));
-    ring.userData = { baseScale: 1, phase: Math.random()*Math.PI*2 };
+    ring.lookAt(new THREE.Vector3(0, 0, 0));
+    ring.userData = { baseScale: 1, phase: Math.random() * Math.PI * 2 };
     scene.add(ring);
     pulseRings.push(ring);
   });
@@ -361,7 +310,7 @@ function initGlobe() {
   // Resize
   function onResize() {
     const nW = container.clientWidth, nH = container.clientHeight;
-    camera.aspect = nW/nH; camera.updateProjectionMatrix();
+    camera.aspect = nW / nH; camera.updateProjectionMatrix();
     renderer.setSize(nW, nH);
   }
   window.addEventListener('resize', onResize);
@@ -372,7 +321,7 @@ function initGlobe() {
     trigger: '#globe-section',
     start: 'top 80%',
     once: true,
-    onEnter: () => { globeVisible = true; dom.style.opacity='0'; dom.style.transition='opacity 1s ease'; setTimeout(()=>dom.style.opacity='1',100); }
+    onEnter: () => { globeVisible = true; dom.style.opacity = '0'; dom.style.transition = 'opacity 1s ease'; setTimeout(() => dom.style.opacity = '1', 100); }
   });
 
   const clock = new THREE.Clock();
@@ -409,26 +358,24 @@ function initGlobe() {
   animate();
 }
 
-// =============================================
-// GSAP ANIMATIONS
-// =============================================
+// GSAP Timelines
 function initAnimations() {
   // Hero entrance
   gsap.set('.hero-subtitle', { y: '100%' });
-  gsap.set(['.outro-title','.outro-body','.outro-cta-row'], { y: 40 });
+  gsap.set(['.outro-title', '.outro-body', '.outro-cta-row'], { y: 40 });
   gsap.set('.truth-eyebrow', { y: 20 });
 
   const heroTl = gsap.timeline({ delay: 0.3 });
   heroTl
     .to('.hero-eyebrow', { opacity: 1, duration: 0.8, ease: 'power2.out' })
-    .fromTo('.hero-title .line', { y: '110%', skewY: 5 }, { y:'0%', skewY:0, duration:1, stagger:0.08, ease:'expo.out' }, '-=0.5')
-    .to('.hero-subtitle', { y:'0%', duration:0.8, ease:'expo.out' }, '-=0.6')
-    .to('.stat-item', { opacity:1, duration:0.5, stagger:0.12, ease:'power2.out' }, '-=0.4')
-    .to('.scroll-cue', { opacity:1, duration:0.5 }, '-=0.2');
+    .fromTo('.hero-title .line', { y: '110%', skewY: 5 }, { y: '0%', skewY: 0, duration: 1, stagger: 0.08, ease: 'expo.out' }, '-=0.5')
+    .to('.hero-subtitle', { y: '0%', duration: 0.8, ease: 'expo.out' }, '-=0.6')
+    .to('.stat-item', { opacity: 1, duration: 0.5, stagger: 0.12, ease: 'power2.out' }, '-=0.4')
+    .to('.scroll-cue', { opacity: 1, duration: 0.5 }, '-=0.2');
 
   // Counters
   document.querySelectorAll('.stat-num').forEach(el => {
-    ScrollTrigger.create({ trigger:el, start:'top 80%', once:true, onEnter:()=>animateCounter(el, parseInt(el.dataset.val,10)) });
+    ScrollTrigger.create({ trigger: el, start: 'top 80%', once: true, onEnter: () => animateCounter(el, parseInt(el.dataset.val, 10)) });
   });
 
   // Depth gauge
@@ -436,11 +383,11 @@ function initAnimations() {
   const depthVal = document.getElementById('depth-value');
   const depthBar = document.getElementById('depth-bar');
   ScrollTrigger.create({
-    trigger:'#descent', start:'top 90%', end:'bottom 10%',
+    trigger: '#descent', start: 'top 90%', end: 'bottom 10%',
     onToggle: self => gauge.classList.toggle('visible', self.isActive),
     onUpdate: self => {
-      depthVal.innerHTML = `${Math.floor(self.progress*11000).toLocaleString()}<span>M</span>`;
-      depthBar.style.height = (self.progress*100)+'%';
+      depthVal.innerHTML = `${Math.floor(self.progress * 11000).toLocaleString()}<span>M</span>`;
+      depthBar.style.height = (self.progress * 100) + '%';
     }
   });
 
@@ -467,10 +414,10 @@ function initAnimations() {
   // Fiber Optic Bundle Draw
   const fibers = document.querySelectorAll('#cable-casing, .fiber-line, .fiber-glow');
   fibers.forEach(path => {
-    const len = path.getTotalLength() || 6500; 
+    const len = path.getTotalLength() || 6500;
     gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
     ScrollTrigger.create({
-      trigger: '#descent', start: 'top top', end: 'bottom bottom', scrub: 1.2,
+      trigger: '#descent', start: 'top center', end: 'bottom center', scrub: true,
       onUpdate: self => path.style.strokeDashoffset = len * (1 - self.progress)
     });
   });
@@ -483,7 +430,7 @@ function initAnimations() {
 
   // Creatures
   document.querySelectorAll('.creature').forEach((creature, i) => {
-    const speed = parseFloat(creature.dataset.speed)||0.3;
+    const speed = parseFloat(creature.dataset.speed) || 0.3;
     ScrollTrigger.create({
       trigger: creature, start: 'top bottom', once: true,
       onEnter: () => {
@@ -502,13 +449,12 @@ function initAnimations() {
   const hotspots = document.querySelectorAll('.hotspot');
   hotspots.forEach((hs, i) => {
     const isLeft = hs.classList.contains('left-aligned');
-    // Initial state: shifted outwards from center
     gsap.set(hs, { opacity: 0, x: isLeft ? -50 : 50 });
-    
+
     ScrollTrigger.create({
-      trigger: hs, 
-      start: 'top 85%', 
-      end: 'bottom 15%',
+      trigger: hs,
+      start: 'center center',
+      end: 'bottom -20%',
       onEnter: () => gsap.to(hs, { opacity: 1, x: 0, duration: 1, ease: 'power3.out' }),
       onLeaveBack: () => gsap.to(hs, { opacity: 0, x: isLeft ? -50 : 50, duration: 0.5 }),
       onLeave: () => gsap.to(hs, { opacity: 0, y: -30, duration: 0.5 }),
@@ -518,41 +464,39 @@ function initAnimations() {
 
   // Truth section
   ScrollTrigger.create({
-    trigger:'#truth', start:'top 65%', once:true,
+    trigger: '#truth', start: 'top 65%', once: true,
     onEnter: () => {
-      gsap.to('.truth-eyebrow', { opacity:1, y:0, duration:0.6 });
-      gsap.to('.reveal-word', { opacity:1, y:0, duration:0.8, stagger:0.08, ease:'expo.out', delay:0.2 });
-      gsap.to('.truth-col', { opacity:1, y:0, duration:0.8, stagger:0.15, ease:'power3.out', delay:0.6 });
+      gsap.to('.truth-eyebrow', { opacity: 1, y: 0, duration: 0.6 });
+      gsap.to('.reveal-word', { opacity: 1, y: 0, duration: 0.8, stagger: 0.08, ease: 'expo.out', delay: 0.2 });
+      gsap.to('.truth-col', { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: 'power3.out', delay: 0.6 });
     }
   });
 
   // Globe section entrance
   ScrollTrigger.create({
-    trigger:'#globe-section', start:'top 70%', once:true,
+    trigger: '#globe-section', start: 'top 70%', once: true,
     onEnter: () => {
-      gsap.to('.globe-eyebrow', { opacity:1, duration:0.5 });
-      gsap.to('.globe-title', { opacity:1, duration:0.6, delay:0.2 });
-      gsap.to('.globe-sub', { opacity:1, duration:0.6, delay:0.4 });
-      gsap.to('.globe-legend', { opacity:1, duration:0.6, delay:0.8 });
+      gsap.to('.globe-eyebrow', { opacity: 1, duration: 0.5 });
+      gsap.to('.globe-title', { opacity: 1, duration: 0.6, delay: 0.2 });
+      gsap.to('.globe-sub', { opacity: 1, duration: 0.6, delay: 0.4 });
+      gsap.to('.globe-legend', { opacity: 1, duration: 0.6, delay: 0.8 });
     }
   });
 
   // Outro
   ScrollTrigger.create({
-    trigger:'#outro', start:'top 70%', once:true,
+    trigger: '#outro', start: 'top 70%', once: true,
     onEnter: () => {
       gsap.timeline()
-        .to('.outro-title', { opacity:1, y:0, duration:0.8, ease:'power3.out' })
-        .to('.outro-body', { opacity:1, y:0, duration:0.8, ease:'power3.out' }, '-=0.5')
-        .to('.outro-cta-row',{ opacity:1, y:0, duration:0.8, ease:'power3.out' }, '-=0.5')
-        .to('.outro-credit', { opacity:1, duration:0.6 }, '-=0.3');
+        .to('.outro-title', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' })
+        .to('.outro-body', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.5')
+        .to('.outro-cta-row', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.5')
+        .to('.outro-credit', { opacity: 1, duration: 0.6 }, '-=0.3');
     }
   });
 }
 
-// =============================================
-// MAIN
-// =============================================
+// Entry Point
 async function main() {
   await initLoader();
   initCursor();
