@@ -79,8 +79,8 @@ function initCursor() {
   gsap.ticker.add(() => {
     cx += (mx - cx) * 0.12;
     cy += (my - cy) * 0.12;
-    gsap.set(cursor, { x: cx, y: cy });
-    gsap.set(dot, { x: mx, y: my });
+    gsap.set(cursor, { x: cx, y: cy, xPercent: -50, yPercent: -50 });
+    gsap.set(dot, { x: mx, y: my, xPercent: -50, yPercent: -50 });
   });
   document.querySelectorAll('a, button, .hotspot').forEach(el => {
     el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
