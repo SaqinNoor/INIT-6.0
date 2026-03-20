@@ -686,7 +686,7 @@ function initAnimations() {
     onEnter: () => {
       gsap.to('.truth-eyebrow', { opacity: 1, y: 0, duration: 0.6 });
       gsap.to('.reveal-word', { opacity: 1, y: 0, duration: 0.8, stagger: 0.08, ease: 'expo.out', delay: 0.2 });
-      gsap.to('.truth-col', { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: 'power3.out', delay: 0.6 });
+      gsap.to('.truth-row', { opacity: 1, y: 0, duration: 0.9, stagger: 0.2, ease: 'power3.out', delay: 0.7 });
     }
   });
 
