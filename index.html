@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Syne:wght@400;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700;800&family=Manrope:wght@300;400;500;600&family=Syne:wght@400;600;700;800&display=swap"
     rel="stylesheet" />
   <link rel="icon" type="image/png" href="/favicon.png" />
 </head>
@@ -55,45 +55,43 @@
             <p class="hero-subtitle">You think the internet lives in the cloud. It lies at the <em>bottom of the
                 ocean.</em></p>
           </div>
-          <div class="hero-stats">
-            <div class="stat-item">
-              <span class="stat-num" data-val="1400000">0</span>
-              <span class="stat-unit">KM</span>
-              <span class="stat-label">of cable on the ocean floor</span>
+          <div class="hero-footer">
+            <div class="hero-stats">
+              <div class="stat-item">
+                <span class="stat-num" data-val="1400000">0</span>
+                <span class="stat-unit">KM</span>
+                <span class="stat-label">of cable on the ocean floor</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-num" data-val="529">0</span>
+                <span class="stat-unit">+</span>
+                <span class="stat-label">active submarine cable systems</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-num" data-val="99">0</span>
+                <span class="stat-unit">%</span>
+                <span class="stat-label">of international data carried</span>
+              </div>
             </div>
-            <div class="stat-item">
-              <span class="stat-num" data-val="529">0</span>
-              <span class="stat-unit">+</span>
-              <span class="stat-label">active submarine cable systems</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-num" data-val="99">0</span>
-              <span class="stat-unit">%</span>
-              <span class="stat-label">of international data carried</span>
-            </div>
-          </div>
 
-          <div class="scroll-cue">
-            <span>SCROLL TO DESCEND</span>
-            <div class="scroll-arrow">
-              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="24" cy="24" r="23" stroke="currentColor" stroke-width="1.5" />
-                <path d="M16 21L24 30L32 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                  stroke-linejoin="round" />
-              </svg>
+            <div class="scroll-cue">
+              <span>SCROLL TO DESCEND</span>
+              <div class="scroll-arrow">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="24" cy="24" r="23" stroke="currentColor" stroke-width="1.5" />
+                  <path d="M16 21L24 30L32 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg>
+              </div>
             </div>
           </div>
 
         </div>
 
-        <div class="depth-gauge">
-          <div class="depth-label">DEPTH</div>
-          <div class="depth-value" id="depth-value">0<span>M</span></div>
-          <div class="depth-bar-wrap">
-            <div class="depth-bar" id="depth-bar"></div>
-          </div>
-        </div>
       </section>
+
+      </section>
+
 
 
       <div class="editorial-marquee">
@@ -348,6 +346,14 @@
         </div>
       </section>
 
+    </div>
+  </div>
+
+  <div class="depth-gauge">
+    <div class="depth-label">DEPTH</div>
+    <div class="depth-value" id="depth-value">0<span>M</span></div>
+    <div class="depth-bar-wrap">
+      <div class="depth-bar" id="depth-bar"></div>
     </div>
   </div>
 

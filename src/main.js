@@ -551,6 +551,7 @@ function initGlobe(lenis) {
 function initAnimations() {
 
   gsap.set('.hero-subtitle', { y: '100%' });
+  gsap.set('.hero-stats', { opacity: 0, scale: 0.95 });
   gsap.set(['.outro-title', '.outro-body', '.outro-cta-row'], { y: 40 });
   gsap.set('.truth-eyebrow', { y: 20 });
 
@@ -559,7 +560,8 @@ function initAnimations() {
     .to('.hero-eyebrow', { opacity: 1, duration: 0.8, ease: 'power2.out' })
     .fromTo('.hero-title .line', { y: '110%', skewY: 5 }, { y: '0%', skewY: 0, duration: 1, stagger: 0.08, ease: 'expo.out' }, '-=0.5')
     .to('.hero-subtitle', { y: '0%', duration: 0.8, ease: 'expo.out' }, '-=0.6')
-    .to('.stat-item', { opacity: 1, duration: 0.5, stagger: 0.12, ease: 'power2.out' }, '-=0.4')
+    .to('.hero-stats', { opacity: 1, scale: 1, duration: 0.8, ease: 'expo.out' }, '-=0.4')
+    .to('.stat-item', { opacity: 1, duration: 0.5, stagger: 0.12, ease: 'power2.out' }, '-=0.6')
     .to('.scroll-cue', { opacity: 1, duration: 0.5 }, '-=0.2');
 
   document.querySelectorAll('.stat-num').forEach(el => {
@@ -571,11 +573,16 @@ function initAnimations() {
   const depthVal = document.getElementById('depth-value');
   const depthBar = document.getElementById('depth-bar');
   ScrollTrigger.create({
-    trigger: '#descent', start: 'top 90%', end: 'bottom 10%',
+    trigger: '#descent', start: 'top+=15% center', end: 'bottom-=15% center',
     onToggle: self => gauge.classList.toggle('visible', self.isActive),
     onUpdate: self => {
+      const isMob = window.innerWidth <= 768;
       depthVal.innerHTML = `${Math.floor(self.progress * 11000).toLocaleString()}<span>M</span>`;
-      depthBar.style.height = (self.progress * 100) + '%';
+      if (isMob) {
+        depthBar.style.transform = `scaleX(${self.progress})`;
+      } else {
+        depthBar.style.transform = `scaleY(${self.progress})`;
+      }
     }
   });
 
@@ -661,13 +668,15 @@ function initAnimations() {
       .to(content, { autoAlpha: 1, y: 0, duration: 0.4, stagger: 0.05, ease: 'power2.out' }, '-=0.3');
 
     ScrollTrigger.create({
-      trigger: hs,
+      trigger: pulse,
       start: 'center center',
-      end: isMobile ? 'bottom 5%' : 'bottom 10%',
+      end: 'bottom 10%',
+      fastScrollEnd: true,
+      preventOverlaps: true,
       onEnter: () => tl.play(),
       onLeaveBack: () => tl.reverse(),
-      onLeave: () => { if (!isMobile) gsap.to(hs, { opacity: 0, y: -30, duration: 0.5 }); },
-      onEnterBack: () => { if (!isMobile) gsap.to(hs, { opacity: 1, y: 0, duration: 0.5, onComplete: () => tl.play() }); }
+      onLeave: () => { if (!isMobile) gsap.to(hs, { autoAlpha: 0, y: -20, duration: 0.4 }); },
+      onEnterBack: () => { if (!isMobile) gsap.to(hs, { autoAlpha: 1, y: 0, duration: 0.4, onComplete: () => tl.play() }); }
     });
   });
 
@@ -718,6 +727,7 @@ async function main() {
   const introTl = initAnimations();
   await initLoader(() => {
     if (introTl) introTl.play();
+    ScrollTrigger.refresh();
   });
 }
 
