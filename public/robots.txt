@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://init6.saqinnoor.dpdns.org/sitemap.xml
