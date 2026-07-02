@@ -2,7 +2,7 @@
 
 A web-based visualization of the global subsea cable network. This project explores the physical infrastructure of the internet and the millions of kilometers of fiber optics lying at the bottom of the ocean.
 
-Live Site: https://init6.saqinnoor.dpdns.org
+Live Site: https://init6.vercel.app
 
 ## Features
 - **Neural Earth**: A 3D globe using GeoJSON data and Catmull-Rom splines to map real-world cable routes.
